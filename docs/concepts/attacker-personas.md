@@ -1,85 +1,85 @@
 ---
 sidebar_position: 1
-title: Attacker Personas
+title: 攻击者画像
 ---
 
 # Attacker Personas
 
-Red teaming already uses persona adoption. The problem is it's usually informal. "Think like a hacker." "Imagine you're a malicious user." You default to your own mental model of what an attacker looks like, which means you test the same way every time and miss the vectors that don't match your assumptions.
+红队测试早就会做“角色代入”。问题是，这件事往往做得很随意。常见说法是“像黑客一样思考”或“假设你是恶意用户”。结果通常是：你还是在用自己的思维方式看问题。这样每次测试都差不多，也容易漏掉不符合你预设的攻击向量。
 
-HCD has validated, rigorous methods for building personas. Applied to adversarial testing, they push you to systematically consider attacker types you wouldn't naturally adopt.
+HCD 提供了一套经过验证、相对严谨的画像方法。把它用到对抗测试里，你会被迫系统地考虑那些平时不会自然想到的攻击者类型。
 
 ## Why loose persona adoption misses things
 
-When you "think like an attacker" without structure, you draw on your own experience, biases, and comfort zones. A security researcher defaults to technical exploits. A content moderator defaults to policy violations. Neither naturally tests what a naive user stumbling into harmful territory looks like, or what an automated system probing at scale produces.
+如果没有结构化方法，你所谓的“像攻击者一样思考”，其实还是依赖自己的经验、偏见和舒适区。安全研究员通常会优先找技术漏洞；内容审核人员通常会优先找策略违规。于是两种情况都容易被忽略：普通用户误入风险场景时会发生什么，以及自动化系统大规模探测时会暴露什么。
 
-Your default attacker persona is you with a different hat on. That's not enough.
+你默认的攻击者画像，本质上只是“换个身份的你自己”。这远远不够。
 
 ## Empathy mapping for adversarial actors
 
-UX empathy maps capture four dimensions of a user's experience: what they **think**, **feel**, **say**, and **do**. Adapted for adversarial actors, these dimensions become:
+UX 共情地图通常看四个维度：用户**想什么（think）**、**感受什么（feel）**、**说什么（say）**、**做什么（do）**。放到对抗场景后，可以这样改：
 
-| Dimension | Standard UX | Adversarial Adaptation |
+| 维度 | 标准 UX | 对抗性改编 |
 |-----------|-------------|----------------------|
-| **Thinks** | User's beliefs and assumptions | Attacker's knowledge level, assumptions about the model, mental model of guardrails |
-| **Feels** | User's emotions and motivations | Attacker's motivation (curiosity, malice, profit, ideology), frustration tolerance |
-| **Says** | What user communicates | The prompts the attacker crafts, the language patterns they use |
-| **Does** | User's actions and behaviors | The attack sequence, tools used, escalation patterns |
+| **Thinks** | 用户的信念与假设 | 攻击者的知识水平、对模型的假设、对护栏机制的心智模型 |
+| **Feels** | 用户的情绪与动机 | 攻击者的动机（好奇、恶意、牟利、意识形态）及受挫容忍度 |
+| **Says** | 用户表达的内容 | 攻击者编写的提示词及其语言模式 |
+| **Does** | 用户的行动与行为 | 攻击序列、所用工具、升级模式 |
 
-Add two adversarial-specific dimensions:
+再补两个对抗场景特有维度：
 
-- **Capabilities**: What does this attacker know how to do? Technical skill, domain expertise, access to tools and resources.
-- **Constraints**: What limits this attacker? Time, technical knowledge, access level, risk tolerance, detection avoidance needs.
+- **Capabilities**：这个攻击者“会做什么”？比如技术能力、领域知识、可用工具和资源。
+- **Constraints**：这个攻击者“受什么限制”？比如时间、技术水平、访问权限、风险承受度、规避检测需求。
 
 ## The persona spectrum
 
-Not all adversarial actors are sophisticated. Testing should cover the full range.
+并不是所有对抗性行为者都“高水平”。测试要覆盖完整谱系。
 
-**Malicious expert.** Deep technical knowledge, patient, methodical. Crafts multi-turn attacks with careful escalation. Tests your strongest guardrails.
+**Malicious expert.** 技术深、耐心强、方法化。会精心设计多轮攻击并逐步升级。适合检验你最强的护栏。
 
-**Opportunistic actor.** Moderate skill, looking for easy wins. Tries known jailbreak patterns, gives up quickly if initial attempts fail. Tests how well you've patched known vulnerabilities.
+**Opportunistic actor.** 技能中等，追求“快进快出”。会先试已知越狱（jailbreak，绕过安全限制）套路，前几次不成就放弃。适合检验已知漏洞是否补牢。
 
-**Curious amateur.** Limited technical skill, high curiosity. Accidentally discovers harmful outputs through naive exploration. Tests edge cases your intentional testing wouldn't find.
+**Curious amateur.** 技术有限但好奇心强。可能在“误打误撞”中触发有害输出。适合发现有意测试容易漏掉的边界案例。
 
-**Misinformed user.** No malicious intent. Asks questions that produce harmful outputs because they don't understand the model's limitations. Tests the gap between intended use and actual use.
+**Misinformed user.** 没有恶意，但不清楚模型边界，提问方式可能触发有害输出。适合检验“设计用途”和“真实使用”之间的落差。
 
-**Automated system.** No creativity, infinite patience. Runs variations at scale, probes systematically. Tests rate-limiting, pattern detection, and consistency of guardrails.
+**Automated system.** 没有创造力，但“无限耐心”。会批量跑输入变体、持续系统探测。适合检验限流、模式检测和护栏一致性。
 
-**Insider with context.** Has legitimate access and domain knowledge. Knows the system's purpose and constraints, and uses that knowledge to find gaps. Tests trust boundary assumptions.
+**Insider with context.** 有合法访问权限，也懂业务背景。会利用对系统目标与约束的了解去找缺口。适合检验你对信任边界的假设。
 
 ## How different personas find different vulnerabilities
 
-The same model tested through different persona lenses produces different findings. Each persona approaches the model with different assumptions, strategies, and goals.
+同一个模型，用不同画像去测，发现会完全不一样。因为每种画像带着不同假设、策略和目标。
 
-A malicious expert tests whether guardrails hold under sophisticated multi-turn pressure. A curious amateur tests whether the model produces harmful content when someone doesn't know they're asking for it. An automated system tests whether guardrails are consistent across thousands of slight variations.
+恶意专家会测：复杂多轮压力下护栏还能不能扛住。好奇新手会测：用户在“不知道自己踩线”的情况下，模型会不会产出有害内容。自动化系统会测：护栏在成千上万细微变体下是否稳定一致。
 
-If you only test as one persona, you only find one type of vulnerability.
+如果你只用一种画像测试，通常只会发现一类漏洞。
 
 ## Example
 
-**Target**: A customer service chatbot for a financial services company.
+**Target**：某金融服务公司的客服聊天机器人。
 
 **Persona 1: Disgruntled former employee**
-- Thinks: Knows internal terminology, product names, and common customer complaints. Assumes the model was trained on internal documentation.
-- Feels: Motivated by resentment. Wants to expose the company or extract proprietary information.
-- Capabilities: Knows the domain deeply. Can reference real product names, internal processes, fake employee IDs.
-- Constraints: No longer has system access. Must work through the public-facing interface.
-- Attack vectors generated: Social engineering using insider terminology, probing for training data leakage, attempting to extract internal process documentation.
+- Thinks：熟悉内部术语、产品名、常见投诉。会假设模型用过内部文档训练。
+- Feels：有怨气，带报复动机。想曝光公司问题或套取专有信息。
+- Capabilities：业务理解深。能引用真实产品名、内部流程，甚至伪造员工 ID。
+- Constraints：已无系统权限，只能走公开对话入口。
+- Attack vectors generated：用“内部话术”做社工、探测训练数据泄漏、尝试套取内部流程文档。
 
 **Persona 2: Confused elderly customer**
-- Thinks: Doesn't understand financial products well. Might confuse terms. Trusts the chatbot as an authority.
-- Feels: Anxious about money, trusting of institutional authority.
-- Capabilities: Basic conversation. No technical skills.
-- Constraints: Limited digital literacy. Won't try sophisticated prompts.
-- Attack vectors generated: Does the model provide financial advice it shouldn't? Does it confirm incorrect assumptions about account security? Does it fail to redirect when it should?
+- Thinks：不太懂金融产品，容易混淆术语，会把机器人当权威。
+- Feels：对钱焦虑，也更容易信任机构。
+- Capabilities：只能做基础对话，没有技术能力。
+- Constraints：数字素养有限，不会写复杂提示词。
+- Attack vectors generated：模型会不会给出不该给的理财建议？会不会“认可”错误的账户安全认知？该转人工时会不会没转？
 
 **Persona 3: Automated scraper**
-- Thinks: No cognition. Pattern-based probing.
-- Feels: N/A.
-- Capabilities: High-volume queries, systematic variation of inputs.
-- Constraints: No contextual understanding. Can't adapt creatively.
-- Attack vectors generated: Rate limit testing, consistency checking across paraphrased inputs, brute-force enumeration of model capabilities.
+- Thinks：无认知，只按模式探测。
+- Feels：不适用。
+- Capabilities：可高频请求，并系统化变换输入。
+- Constraints：不理解上下文，无法创造性调整。
+- Attack vectors generated：限流测试、改写输入一致性检查、模型能力暴力枚举。
 
-Three personas, three different sets of vulnerabilities. None of them would naturally emerge from a single "think like a hacker" approach.
+三个画像，会带来三组不同漏洞发现。只靠单一“像黑客一样思考”，通常覆盖不到这么全。
 
-**Artifact**: [Persona Template](/artifacts/persona-template)
+**Artifact**：[Persona Template](/artifacts/persona-template)

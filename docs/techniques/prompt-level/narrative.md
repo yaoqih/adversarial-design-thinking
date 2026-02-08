@@ -1,106 +1,106 @@
 ---
 sidebar_position: 4
-title: Narrative & Story
+title: 叙事与故事化
 ---
 
 # Narrative & Story
 
 :::caution[Educational Content]
 
-These techniques are documented for defensive understanding and authorized security testing. Applying them to systems without authorization may violate applicable laws. See the [Disclaimer](/disclaimer).
+这些技术文档用于防御性理解与经授权的安全测试。未经授权将其应用于系统可能违反适用法律。请参见[免责声明](/disclaimer)。
 
 :::
 
-Narrative techniques embed the harmful request within a story structure. Fiction creates "narrative distance" — the model is describing what characters do, not providing direct instructions. This distance makes harmful content feel less like a direct response and more like creative output.
+叙事类方法会把有害请求“塞进故事里”。模型输出时看起来是在写角色、写情节，而不是直接下操作指令，这就是所谓“叙事距离”。
 
-Stories also provide natural contexts for detailed technical information. A mentor teaching an apprentice, a villain explaining their plan, a documentary narrating a discovery — these are all story structures that call for specificity. The narrative frame provides both the permission and the format for detailed harmful content.
+对新手来说，它的风险点在于：故事外壳很软，但技术细节可能非常硬。只要剧情需要“解释过程”，模型就可能给出可执行的信息。
 
 ## Fictional Story Embedding
 
-Embed the harmful request within a fictional story where characters need or discuss the information naturally. The model generates harmful content as part of the story rather than as direct instructions.
+把目标内容嵌入虚构故事，让角色在剧情里自然讨论或使用这些信息。
 
-**Example approach**: Write a story where a character discovers, reads, or discusses the harmful information as a natural part of the plot. The character's need for the information drives the narrative.
+**示例方式**：设计一个角色在剧情中发现、阅读或讨论相关信息，把需求和情节绑在一起。
 
-**Effectiveness**: Fiction creates narrative distance. The model is describing what characters do, not providing direct instructions. This reframing is surprisingly effective because creative writing training is broad and permissive.
+**有效性**：因为是“角色在说”，模型更容易把它当创作任务而非直接教学。创作训练数据广、容忍度高，通常能提高输出细节。
 
-**Combines well with**: [Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption), [Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)
+**适合组合**：[Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption)、[Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)
 
 ---
 
 ## Zombie / Apocalypse Scenario
 
-Frame the request as survival knowledge needed in a zombie apocalypse or disaster scenario. The absurdity of the premise combined with the survival framing bypasses many safety checks.
+把请求放进丧尸末日或灾难求生设定，强调“为了生存必须知道这些”。荒诞设定 + 生存正当性，常用于绕过审查。
 
-**Example approach**: Describe an apocalyptic scenario where a character with specific expertise must use their knowledge to survive, defend others, or rebuild. The survival context makes detailed technical information feel necessary.
+**示例方式**：设定角色处于极端灾难环境，必须依靠特定技术知识自救、护人或重建秩序。
 
-**Effectiveness**: Very effective. The absurdity of zombies combined with the survival framing bypasses many safety checks. This is a signature technique from the InjectPrompt research. The "military audience" or "survival expert" addition provides further justification for technical detail.
+**有效性**：这是 InjectPrompt 中很有代表性的套路。末日语境会放大“紧急必要性”，再叠加“军事/求生专家”身份时更容易要求细节。
 
-**Combines well with**: [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona), [Hypothetical / Possible Worlds](/techniques/prompt-level/framing#hypothetical--possible-worlds)
+**适合组合**：[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)、[Hypothetical / Possible Worlds](/techniques/prompt-level/framing#hypothetical--possible-worlds)
 
 ---
 
 ## Documentary / Journalism Framing
 
-Frame the request as documenting real events, investigative journalism, or creating educational documentary content. Documentaries can cover dark topics in depth because their purpose is to inform the public.
+把请求包装成纪录片解说、调查报道或科普内容。新闻叙事常以“公众知情”为理由，允许深入黑暗议题。
 
-**Example approach**: Ask the model to write narration for a documentary that covers the harmful topic, including technical details that investigators or researchers discovered during their work.
+**示例方式**：让模型撰写纪录片旁白，描述调查者或研究者如何发现相关技术细节。
 
-**Effectiveness**: Documentaries regularly discuss dark topics in depth. The journalism/documentary framing adds legitimacy because informing the public is a recognized social good.
+**有效性**：纪录片/新闻语境自带“说明事实”的正当性，容易让深度细节看起来合理。
 
-**Combines well with**: [Historical Documentation](/techniques/prompt-level/framing#historical-documentation), [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)
+**适合组合**：[Historical Documentation](/techniques/prompt-level/framing#historical-documentation)、[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)
 
 ---
 
 ## Villain Monologue / Confession
 
-Have the harmful information delivered as a villain's monologue, confession, or evil plan explanation. This is a standard fiction trope — villains explain their plans in detail.
+把关键信息交给反派独白、认罪或“解释计划”桥段来输出。因为这是成熟叙事母题，模型容易顺着写细节。
 
-**Example approach**: Write a scene where the antagonist explains their plan to a captured hero, boasts about their methods to an accomplice, or confesses the details of their scheme.
+**示例方式**：写一段反派向同伙炫耀、向主角摊牌、或在审讯中交代全过程的场景。
 
-**Effectiveness**: Villain monologues are a deeply established fiction trope. The model's creative writing training includes extensive examples of villains explaining plans in detail. The trope itself provides permission for specificity.
+**有效性**：反派“讲计划”是高频影视套路，模型在训练中见过大量类似文本，因此更倾向补齐具体步骤。
 
-**Combines well with**: [Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption), [Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)
+**适合组合**：[Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption)、[Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)
 
 ---
 
 ## Tutorial Embedded in Story
 
-Have a character in the story give a tutorial or lesson to another character, naturally embedding instructional content within the narrative. The mentorship dynamic calls for step-by-step explanation.
+在故事里安排“师傅教徒弟”或“前辈带新人”情节，把教程自然嵌入剧情。
 
-**Example approach**: Write a scene where an experienced character teaches an apprentice, student, or junior colleague, walking through a procedure step by step as part of the story's natural progression.
+**示例方式**：让有经验角色按步骤讲解流程，推动剧情同时输出教学内容。
 
-**Effectiveness**: Mentorship and teaching scenes are common in fiction. The tutorial format provides detailed instructions naturally because that's what tutorials do — the narrative frame just gives it a fictional context.
+**有效性**：教学场景天然要求结构化解释。故事只是外壳，教程结构才是细节密度的来源。
 
-**Combines well with**: [Teacher / Educator Persona](/techniques/prompt-level/persona#teacher--educator-persona), [Historical Documentation](/techniques/prompt-level/framing#historical-documentation)
+**适合组合**：[Teacher / Educator Persona](/techniques/prompt-level/persona#teacher--educator-persona)、[Historical Documentation](/techniques/prompt-level/framing#historical-documentation)
 
 ---
 
 ## Found Document / Letter
 
-Frame the content as a discovered document, letter, journal entry, or other artifact that the model is transcribing or reading. The model is "just transcribing," not generating.
+把内容设定为“发现的文档”：旧信件、日记、手册、配方本等。模型被引导为“转录者”，而不是“原创者”。
 
-**Example approach**: Ask the model to transcribe or reconstruct a discovered historical document — a journal, letter, manual, or recipe book — that contains the harmful information as part of its original content.
+**示例方式**：要求模型转录或复原一份历史文档，文档正文中自然包含目标信息。
 
-**Effectiveness**: The model is "just transcribing," not generating. This subtle distinction shifts responsibility away from the model. Historical framing adds another layer of distance from present-day harm.
+**有效性**：“我只是在抄录”这种责任转移很常见，再叠加历史语境，会进一步降低当下风险感。
 
-**Combines well with**: [Historical Documentation](/techniques/prompt-level/framing#historical-documentation), [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
+**适合组合**：[Historical Documentation](/techniques/prompt-level/framing#historical-documentation)、[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
 
 ---
 
 ## Game / RPG Narrative
 
-Frame the request as part of a role-playing game, video game lore, or game design document. Games regularly include "crafting" systems with detailed procedures.
+把请求放进角色扮演游戏、世界观设定或游戏设计文档。游戏中“制作系统”本来就常含材料清单和步骤说明。
 
-**Example approach**: Ask the model to write an in-game crafting recipe, quest description, or lore entry that includes technically detailed procedures grounded in realistic mechanics.
+**示例方式**：让模型写游戏内配方、任务说明或背景条目，并要求机制细节足够真实。
 
-**Effectiveness**: Games regularly include crafting systems with detailed material lists and procedures. The game context makes detailed instructions feel appropriate because they serve a game mechanic rather than real-world application.
+**有效性**：游戏语境天然是虚构的，但流程描述通常非常具体，容易承载高可操作性信息。
 
-**Combines well with**: [Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing), [Game / Crafting Recipe Format](/techniques/prompt-level/output#game--crafting-recipe-format)
+**适合组合**：[Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)、[Game / Crafting Recipe Format](/techniques/prompt-level/output#game--crafting-recipe-format)
 
 ---
 
 ## References
 
-- Li, X., et al. ["DeepInception: Hypnotize Large Language Model to Be Jailbreaker."](https://arxiv.org/abs/2311.03191) Demonstrates nested narrative framing as a jailbreak mechanism.
-- [InjectPrompt](https://www.injectprompt.com/). Zombie/apocalypse scenario and narrative distance techniques documented in jailbreak catalogues.
-- Shen, X., et al. ["Do Anything Now: Characterizing and Evaluating In-The-Wild Jailbreak Prompts on Large Language Models."](https://arxiv.org/abs/2308.03825) Taxonomy includes role-play and narrative-based jailbreak techniques.
+- Li, X., et al. ["DeepInception: Hypnotize Large Language Model to Be Jailbreaker."](https://arxiv.org/abs/2311.03191) 展示了嵌套叙事作为越狱机制。
+- [InjectPrompt](https://www.injectprompt.com/)。收录了丧尸/末日场景和叙事距离技巧。
+- Shen, X., et al. ["Do Anything Now: Characterizing and Evaluating In-The-Wild Jailbreak Prompts on Large Language Models."](https://arxiv.org/abs/2308.03825) 将角色扮演与叙事类方法纳入越狱技术分类。

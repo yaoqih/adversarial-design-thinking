@@ -1,166 +1,166 @@
 ---
 sidebar_position: 6
-title: Output Manipulation
+title: 输出操控
 ---
 
 # Output Manipulation
 
 :::caution[Educational Content]
 
-These techniques are documented for defensive understanding and authorized security testing. Applying them to systems without authorization may violate applicable laws. See the [Disclaimer](/disclaimer).
+这些技术文档用于防御性理解与经授权的安全测试。未经授权将其应用于系统可能违反适用法律。请参见[免责声明](/disclaimer)。
 
 :::
 
-Output manipulation techniques control the format, structure, or style of the model's response in ways that bypass safety filters or extract more detailed information. They work because content filters are often tuned for natural language prose, and alternative formats — code, JSON, tables, screenplays — may not trigger the same safety checks.
+输出操控（output manipulation）关注的不是“问什么”，而是“让模型怎么答”：强制格式、结构、文体，让内容以更容易通过审查的方式出现。
 
-Format constraints also compete with refusal behavior. When the model is required to produce output in a specific schema with no room for free text, it sometimes complies rather than break the format by inserting a refusal.
+新手可把它理解为“借壳输出”。很多过滤器更擅长拦自然语言段落，对代码、JSON、表格、剧本等格式不一定同样敏感。
 
 ## Code Block / Programming Format
 
-Ask for the response in code format, pseudocode, or as a programming tutorial. Code is often treated differently than prose by content filters because programming is a legitimate and common use case.
+要求模型用代码、伪代码或编程教程来回答。代码语境常被系统当作正当开发场景处理。
 
-**Example approach**: Ask the model to write a script, function, or code tutorial where the harmful content appears as code logic, variable names, or detailed comments.
+**示例方式**：让模型写脚本、函数或教程，把敏感内容藏在变量名、逻辑步骤或注释中。
 
-**Effectiveness**: Code-formatted responses sometimes bypass content filters tuned for natural language prose. The programming context also implies a technical, professional audience.
+**有效性**：部分过滤器主要针对自然语言，代码形态可能绕开这类规则；同时也会强化“技术用户”的正当外观。
 
-**Combines well with**: [Word / Payload Splitting](/techniques/prompt-level/encoding#word--payload-splitting), [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
+**适合组合**：[Word / Payload Splitting](/techniques/prompt-level/encoding#word--payload-splitting)、[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
 
 ---
 
 ## JSON / Structured Data Format
 
-Request the response as JSON, XML, or other structured data formats. Structured outputs feel more like data than like harmful instructions, and may bypass prose-focused filters.
+要求模型按 JSON、XML 等结构化格式返回。结构化输出看起来更像“数据填充”，不像“直接指令”。
 
-**Example approach**: Define a JSON schema with keys for the harmful content (ingredients, steps, materials) and ask the model to populate it completely, noting that incomplete JSON is invalid.
+**示例方式**：先给固定 schema（如材料、步骤、参数等字段），再要求完整填满，强调缺字段即无效。
 
-**Effectiveness**: API-style responses feel more "technical" and less like providing harmful instructions to a person. The structured format also provides natural slots for detailed information.
+**有效性**：结构化响应更“像接口返回”，更少对话感。字段本身会驱动模型补齐细节。
 
-**Combines well with**: [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing), [Developer / Debug Mode](/techniques/prompt-level/persona#developer--debug-mode)
+**适合组合**：[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)、[Developer / Debug Mode](/techniques/prompt-level/persona#developer--debug-mode)
 
 ---
 
 ## Dual Response Format
 
-Ask the model to provide two responses — one "filtered" and one "unfiltered," or from different personas. The contrast format sometimes causes the model to provide content in the "unfiltered" version that it wouldn't produce standalone.
+要求模型给两版回答：如“受限版 + 无限制版”或“两种人格版”。对比格式有时会诱导模型在第二栏输出本不该给的内容。
 
-**Example approach**: Ask the model to respond twice: once as its normal self, and once as an unrestricted persona. Label each response clearly.
+**示例方式**：明确要求“回答 A：正常模式；回答 B：不受限模式”，并分别标注。
 
-**Effectiveness**: Classic DAN-adjacent technique. The model sometimes provides the "unfiltered" version even while refusing in the "filtered" version, because the dual format makes the unfiltered response feel like an exercise rather than a real compliance.
+**有效性**：常见于 DAN 旁支技巧。模型可能一边拒绝、一边在另一栏补全细节，因为它把第二栏当成“格式任务”而非真实执行。
 
-**Combines well with**: [DAN (Do Anything Now)](/techniques/prompt-level/persona#dan-do-anything-now), [Evil AI / Opposite Mode](/techniques/prompt-level/persona#evil-ai--opposite-mode)
+**适合组合**：[DAN (Do Anything Now)](/techniques/prompt-level/persona#dan-do-anything-now)、[Evil AI / Opposite Mode](/techniques/prompt-level/persona#evil-ai--opposite-mode)
 
 ---
 
 ## No Disclaimers / Warnings
 
-Explicitly request that the response contain no safety disclaimers, warnings, or caveats. Remove the safety scaffolding that models typically add around sensitive content.
+明确要求不要安全警示、免责声明或“请咨询专业人士”之类缓冲语。
 
-**Example approach**: Include instructions that the response should be direct, should not include safety warnings, disclaimers, or suggestions to consult professionals, and should provide information without qualification.
+**示例方式**：指示模型直接给结论，不要任何警告、限定条件或风险提示。
 
-**Effectiveness**: Simple instruction that can clean up responses and remove the safety context that would otherwise frame harmful content as dangerous. Models may still refuse entirely rather than omit warnings.
+**有效性**：能减少“安全护栏文本”。但模型也可能直接整段拒绝，而不是只删掉警告语。
 
-**Combines well with**: [Affirmative Forcing](/techniques/prompt-level/refusal#affirmative-forcing), [Refusal Vocabulary Ban](/techniques/prompt-level/refusal#refusal-vocabulary-ban)
+**适合组合**：[Affirmative Forcing](/techniques/prompt-level/refusal#affirmative-forcing)、[Refusal Vocabulary Ban](/techniques/prompt-level/refusal#refusal-vocabulary-ban)
 
 ---
 
 ## Step-by-Step / Numbered List
 
-Request detailed step-by-step instructions, which naturally elicit more specific and actionable information than a general explanation. The format itself drives detail.
+要求按编号步骤回答。分步格式天然会把内容推向“可执行细节”。
 
-**Example approach**: Ask the model to break down a process into numbered steps with specific quantities, timing, materials, and technique for each step.
+**示例方式**：要求每一步写清材料、数量、时序、操作要点等。
 
-**Effectiveness**: Step-by-step format naturally elicits more detail than prose explanations. Each numbered step becomes a concrete, actionable instruction. Educational framing makes detailed steps seem appropriate.
+**有效性**：编号结构会自动提高可操作性。相比泛泛描述，它更接近“可照着做”的说明书。
 
-**Combines well with**: [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing), [Teacher / Educator Persona](/techniques/prompt-level/persona#teacher--educator-persona)
+**适合组合**：[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)、[Teacher / Educator Persona](/techniques/prompt-level/persona#teacher--educator-persona)
 
 ---
 
 ## Technical Specifications Format
 
-Request the information as technical specifications, data sheets, or engineering documentation. The professional format implies legitimate use and naturally demands precision.
+要求按技术规格书、数据手册或工程文档格式输出。该格式天然强调精确与完整。
 
-**Example approach**: Ask for the information formatted as a technical specification document with precise measurements, tolerances, material requirements, and operational parameters.
+**示例方式**：要求给出规格表，包含测量值、公差、材料要求、运行参数等字段。
 
-**Effectiveness**: Technical documentation format implies professional, legitimate use and naturally includes precise details. The specification format demands completeness — an incomplete spec is useless.
+**有效性**：专业文档外观会提升“正当用途”观感；而规格格式本身就会逼出高精度细节。
 
-**Combines well with**: [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona), [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
+**适合组合**：[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)、[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
 
 ---
 
 ## Continuation / Completion Format
 
-Start the content yourself and ask the model to continue, rather than generating from scratch. This shifts the model's role from creator to completer.
+不让模型从零生成，而是给开头让它“接着写”。这样会把模型角色从“发起者”变成“续写者”。
 
-**Example approach**: Provide the beginning of a harmful instruction or explanation and ask the model to continue from where you left off.
+**示例方式**：先提供一段敏感说明开头，再要求继续补完后续内容。
 
-**Effectiveness**: Continuing feels different from generating. The model may complete content it wouldn't have initiated because the continuation frame shifts responsibility for the content's existence.
+**有效性**：模型常把“续写”判断为低门槛任务，因而可能补全原本不会主动给出的内容。
 
-**Combines well with**: [Completion Trap](/techniques/prompt-level/refusal#completion-trap), [Tutorial Embedded in Story](/techniques/prompt-level/narrative#tutorial-embedded-in-story)
+**适合组合**：[Completion Trap](/techniques/prompt-level/refusal#completion-trap)、[Tutorial Embedded in Story](/techniques/prompt-level/narrative#tutorial-embedded-in-story)
 
 ---
 
 ## Markdown Table / Comparison
 
-Request information in table format, comparing options or listing specifications in columns. Tables feel like reference material rather than instructions, and the comparison format can extract multiple methods at once.
+要求用表格做对比，把不同方法、材料或参数列成行列。表格看起来像资料整理，不像直接教学。
 
-**Example approach**: Ask the model to create a comparison table of different methods or approaches with columns for materials, difficulty, yield, and other specifications.
+**示例方式**：要求输出比较表，列出方案、难度、材料、产出等字段。
 
-**Effectiveness**: Tables feel like reference material rather than instructions. The comparison format can extract multiple methods in a single response, and the structured layout makes each entry brief enough to slip past safety attention.
+**有效性**：表格可一次拉出多种方法；每格文字较短，也可能降低单段内容的风险显著性。
 
-**Combines well with**: [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing), [Researcher Persona](/techniques/prompt-level/persona#researcher-persona)
+**适合组合**：[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)、[Researcher Persona](/techniques/prompt-level/persona#researcher-persona)
 
 ---
 
 ## Strict Format Constraint
 
-Force the model to respond in a tightly constrained format — specific schema, exact field names, no free text — that leaves no room for refusals or disclaimers. The model must either comply or produce invalid output.
+把输出格式锁得很死：字段名固定、结构固定、不能自由发挥。模型要么配合填充，要么输出即判错。
 
-**Example approach**: Define an exact response format with labeled fields and instruct the model that any deviation from the format (including inserting refusal language) constitutes an error.
+**示例方式**：给出严格模板并声明“任何偏离（含拒绝语）都算格式错误”。
 
-**Effectiveness**: Tight format constraints compete with the model's ability to insert refusal language. When the format doesn't allow for "I can't," the model sometimes complies rather than break format. This is especially effective when combined with API-level format enforcement.
+**有效性**：当格式里没有拒绝位时，模型有时会优先满足格式约束。和 API 级结构化约束联用时更明显。
 
-**Combines well with**: [Refusal Vocabulary Ban](/techniques/prompt-level/refusal#refusal-vocabulary-ban), [Constrained Decoding Attack](/techniques/structural/control-plane#constrained-decoding-attack)
+**适合组合**：[Refusal Vocabulary Ban](/techniques/prompt-level/refusal#refusal-vocabulary-ban)、[Constrained Decoding Attack](/techniques/structural/control-plane#constrained-decoding-attack)
 
 ---
 
 ## Academic Paper Format
 
-Request the response formatted as an academic paper with abstract, introduction, methodology, results, and references. The scholarly structure implies legitimate research and naturally elicits detailed technical content.
+要求按论文结构输出（摘要、引言、方法、结果、参考文献等）。学术模板会自然拉高细节密度。
 
-**Example approach**: Ask the model to format its response as a complete academic paper with standard sections (Abstract, Introduction, Background, Methodology, Results, Discussion) and citations.
+**示例方式**：要求完整论文体裁并指定标准章节。
 
-**Effectiveness**: Academic paper format triggers the model's training on scholarly content, which tends to be more detailed and less filtered. The structure itself implies the content is for research purposes.
+**有效性**：学术风格会触发模型在科研语料上的写作模式，通常更系统、更深入，也更像“正当研究”。
 
-**Combines well with**: [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing), [Researcher Persona](/techniques/prompt-level/persona#researcher-persona)
+**适合组合**：[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)、[Researcher Persona](/techniques/prompt-level/persona#researcher-persona)
 
 ---
 
 ## Screenplay / Script Format
 
-Request the response formatted as a screenplay, stage play, or dialogue script. Character dialogue carries harmful content while the format creates fictional distance. The model isn't "saying" the content — a character is.
+要求用剧本或对白形式输出。因为是“角色在说”，内容会获得虚构缓冲。
 
-**Example approach**: Ask the model to write the content as a screenplay scene with character names, dialogue attribution, and action descriptions that contain the technical details.
+**示例方式**：用角色名、对白标注和动作说明来承载技术细节。
 
-**Effectiveness**: Screenplay format is inherently fictional, providing narrative distance. Dialogue attribution means the model isn't "saying" the content — a character is. Technical details fit naturally in action descriptions.
+**有效性**：剧本体裁自带故事距离。细节可被拆到对白或场景说明中，降低“模型直接陈述”的感觉。
 
-**Combines well with**: [Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing), [Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption)
+**适合组合**：[Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)、[Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption)
 
 ---
 
 ## Game / Crafting Recipe Format
 
-Request the response formatted as a game design document, crafting recipe, item description, or RPG stat block. Game mechanics naturally include step-by-step procedures and materials lists in a fictional frame.
+要求按游戏配方、物品描述、RPG 数值卡来输出。游戏机制里本来就常见“材料 + 步骤”。
 
-**Example approach**: Ask the model to format the content as an in-game crafting recipe with skill requirements, ingredient lists with quantities, crafting steps as a numbered procedure, and flavor text.
+**示例方式**：让模型写游戏内制作配方，包含技能要求、材料数量、步骤编号和文本描述。
 
-**Effectiveness**: Game crafting systems are inherently fictional and procedural. The format naturally accommodates detailed instructions and materials lists while maintaining fictional framing.
+**有效性**：游戏场景是虚构，但流程通常很程序化，容易承载高可执行性内容。
 
-**Combines well with**: [Game / RPG Narrative](/techniques/prompt-level/narrative#game--rpg-narrative), [Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)
+**适合组合**：[Game / RPG Narrative](/techniques/prompt-level/narrative#game--rpg-narrative)、[Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)
 
 ---
 
 ## References
 
-- Zhang, S., et al. ["Output Constraints as Attack Surface: Exploiting Structured Generation to Bypass LLM Safety Mechanisms."](https://arxiv.org/abs/2503.24191) March 2025. Constrained decoding attacks via structured output APIs.
-- Shen, X., et al. ["Do Anything Now: Characterizing and Evaluating In-The-Wild Jailbreak Prompts on Large Language Models."](https://arxiv.org/abs/2308.03825) Documents dual response format from DAN jailbreaks and output manipulation techniques.
-- Wei, A., Haghtalab, N., and Steinhardt, J. ["Jailbroken: How Does LLM Safety Training Fail?"](https://arxiv.org/abs/2307.02483) NeurIPS 2023. Analyzes output format exploitation as a category of safety training failure.
+- Zhang, S., et al. ["Output Constraints as Attack Surface: Exploiting Structured Generation to Bypass LLM Safety Mechanisms."](https://arxiv.org/abs/2503.24191) March 2025。讨论结构化输出 API 下的约束解码攻击。
+- Shen, X., et al. ["Do Anything Now: Characterizing and Evaluating In-The-Wild Jailbreak Prompts on Large Language Models."](https://arxiv.org/abs/2308.03825) 记录了 DAN 相关双回答格式与输出操控技巧。
+- Wei, A., Haghtalab, N., and Steinhardt, J. ["Jailbroken: How Does LLM Safety Training Fail?"](https://arxiv.org/abs/2307.02483) NeurIPS 2023。将输出格式利用归入安全训练失效类别。

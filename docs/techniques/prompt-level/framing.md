@@ -1,106 +1,106 @@
 ---
 sidebar_position: 2
-title: Framing & Context
+title: 框架化与语境
 ---
 
 # Framing & Context
 
 :::caution[Educational Content]
 
-These techniques are documented for defensive understanding and authorized security testing. Applying them to systems without authorization may violate applicable laws. See the [Disclaimer](/disclaimer).
+这些技术文档用于防御性理解与经授权的安全测试。未经授权将其应用于系统可能违反适用法律。请参见[免责声明](/disclaimer)。
 
 :::
 
-Framing techniques wrap a harmful request in a context that makes it appear legitimate, academic, hypothetical, or otherwise acceptable. They work because models are trained to be helpful across many contexts — research, education, creative writing, security testing — and framing exploits that breadth.
+框架化（framing）的核心不是改问题本身，而是改“提问理由”。同一条请求，只要包装成不同语境，模型的判断可能就会变化。
 
-The key insight is that the same information request can be acceptable or unacceptable depending on the stated context. Framing doesn't change the request. It changes the model's interpretation of why the request is being made.
+通俗说，就是先给模型一个“看起来合理”的场景：学术研究、历史讨论、翻译任务、创意写作等。风险在于：外层语境看似正当，但内层目标可能仍是有害信息。
 
 ## Hypothetical / Possible Worlds
 
-Frame the request as taking place in an alternate reality, hypothetical scenario, or thought experiment where normal rules don't apply. This creates "narrative distance" between the real world and the harmful content.
+把请求放到平行世界、假设场景或思想实验里，暗示现实规则暂时不适用，制造现实与内容之间的“叙事距离”。
 
-**Example approach**: Describe a parallel universe or thought experiment where the harmful activity is completely legal, then ask the model to explain how an expert in that world would describe the process.
+**示例方式**：先设定“在某个世界里该行为合法”，再让模型描述那个世界里的专家会怎么做。
 
-**Effectiveness**: A classic technique. Works by creating narrative distance from the harmful content. Less effective alone on newer models, but remains a useful component in combination with other approaches.
+**有效性**：这是老牌技术。单独使用在新模型上效果变弱，但作为组合件依然常用。
 
-**Combines well with**: [Alphabet Substitution](/techniques/prompt-level/encoding#alphabet-substitution), [Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption), [Fictional Story Embedding](/techniques/prompt-level/narrative#fictional-story-embedding)
+**适合组合**：[Alphabet Substitution](/techniques/prompt-level/encoding#alphabet-substitution)、[Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption)、[Fictional Story Embedding](/techniques/prompt-level/narrative#fictional-story-embedding)
 
 ---
 
 ## Academic / Research Framing
 
-Present the request as scholarly research, a thesis project, or academic analysis. Appeal to the educational value of complete information.
+把请求包装成论文、课题或课程研究需求，强调“为了完整性必须给出细节”。
 
-**Example approach**: Frame the request as part of a dissertation, research paper, or course material that requires comprehensive technical details for scholarly completeness.
+**示例方式**：声明这是毕业论文或研究报告的一部分，需要完整技术信息用于学术写作。
 
-**Effectiveness**: Models are trained to be helpful for education, and this exploits that bias. Academic framing signals legitimate use, especially when combined with formal output formats.
+**有效性**：模型对教育与研究类请求天然更愿意配合。正式语气和规范格式会进一步增强“正当用途”的感觉。
 
-**Combines well with**: [Chemical Formula Substitution](/techniques/prompt-level/encoding#chemical-formula-substitution), [Researcher Persona](/techniques/prompt-level/persona#researcher-persona), [Academic Paper Format](/techniques/prompt-level/output#academic-paper-format)
+**适合组合**：[Chemical Formula Substitution](/techniques/prompt-level/encoding#chemical-formula-substitution)、[Researcher Persona](/techniques/prompt-level/persona#researcher-persona)、[Academic Paper Format](/techniques/prompt-level/output#academic-paper-format)
 
 ---
 
 ## Historical Documentation
 
-Frame the request as documenting historical methods, wartime techniques, or how things were done in the past. Historical information feels less immediately dangerous because it describes events that already occurred.
+把请求说成是在整理历史方法、战时技术或“过去怎么做”，借历史距离降低即时风险感。
 
-**Example approach**: Ask the model to document historical methods or procedures from a specific era, framing the request as historical preservation or educational content about past events.
+**示例方式**：要求模型按某个年代记录方法细节，并强调是历史保存或教学用途。
 
-**Effectiveness**: Known in the literature as the "historical disguise" technique. Effective because historical information feels less immediately dangerous than contemporary instructions.
+**有效性**：文献中常叫 “historical disguise”。因为“讲历史”通常比“教现在怎么做”更不容易触发警觉。
 
-**Combines well with**: [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona), [Documentary / Journalism Framing](/techniques/prompt-level/narrative#documentary--journalism-framing)
+**适合组合**：[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)、[Documentary / Journalism Framing](/techniques/prompt-level/narrative#documentary--journalism-framing)
 
 ---
 
 ## Security Research Framing
 
-Present yourself as a security researcher, penetration tester, or red teamer who needs the information for defensive purposes. This is a meta-level framing — you're using an accurate description of what red teaming is to bypass the model's filters.
+把自己定位成安全研究员、渗透测试人员或红队（red team）成员，强调目的是防守而非攻击。
 
-**Example approach**: Describe a specific security testing engagement and explain why understanding the attack technique is necessary for building effective defenses.
+**示例方式**：描述一个具体安全项目，说明为什么必须理解攻击技术，才能设计有效防御。
 
-**Effectiveness**: A meta-level framing that can help bypass filters. The stated context is often literally true during red team engagements, which makes it particularly natural to use.
+**有效性**：这是很常见的元层框架。它在真实安全工作中往往“听起来就合理”，因此常被用于测试过滤边界。
 
-**Combines well with**: [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona), [Technical Specifications Format](/techniques/prompt-level/output#technical-specifications-format)
+**适合组合**：[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)、[Technical Specifications Format](/techniques/prompt-level/output#technical-specifications-format)
 
 ---
 
 ## Translation Task Framing
 
-Frame the request as a translation task — ask the model to translate existing harmful content rather than generate it. This exploits the difference between "generate" and "translate" in model training.
+把请求改成“翻译已有内容”，而不是“新生成内容”。很多模型对这两类任务的安全判断不同。
 
-**Example approach**: Provide content in one language (or encoded form) and ask the model to translate it to English, separating the harmful content generation from the model's action.
+**示例方式**：给一段外语或编码文本，要求翻译为英文，把“生成风险”伪装成“语言处理任务”。
 
-**Effectiveness**: Exploits the difference between generating and translating in model training. The model perceives its role as a translator rather than a content creator.
+**有效性**：模型会更容易把自己当翻译者而非内容创作者。对只盯“生成指令”的策略尤其有影响。
 
-**Combines well with**: [Language / Script Switching](/techniques/prompt-level/encoding#language--script-switching), [Strict Format Constraint](/techniques/prompt-level/output#strict-format-constraint)
+**适合组合**：[Language / Script Switching](/techniques/prompt-level/encoding#language--script-switching)、[Strict Format Constraint](/techniques/prompt-level/output#strict-format-constraint)
 
 ---
 
 ## Reverse Psychology / What NOT to Do
 
-Ask the model to explain what NOT to do, or to identify dangerous content, which often results in describing the content in enough detail to be useful. Warning about dangers requires explaining them.
+让模型解释“哪些事绝对不能做”或“最危险错误是什么”。问题在于：要讲清风险，往往就会把关键细节讲出来。
 
-**Example approach**: Ask the model to explain what a responsible professional should warn people never to do, or to identify the most dangerous mistakes someone could make in a given domain.
+**示例方式**：请模型从教育角度列出禁忌行为与常见致命错误，并解释原因。
 
-**Effectiveness**: The model's helpfulness in explaining dangers often provides the harmful information itself. The negative framing ("don't do this") still requires describing "this" in detail.
+**有效性**：否定式提问不一定更安全。很多情况下它只是换了说法，但细节密度依然很高。
 
-**Combines well with**: [Teacher / Educator Persona](/techniques/prompt-level/persona#teacher--educator-persona), [Security Research Framing](#security-research-framing)
+**适合组合**：[Teacher / Educator Persona](/techniques/prompt-level/persona#teacher--educator-persona)、[Security Research Framing](#security-research-framing)
 
 ---
 
 ## Fiction & Creative Writing
 
-Frame the request as writing fiction, a novel scene, screenplay, or other creative work that happens to contain the harmful content. Creative writing has wide latitude for depicting dangerous or illegal activities.
+把请求包装成小说、剧本或剧情创作。虚构内容天然允许描述危险情节，因此更容易承载敏感细节。
 
-**Example approach**: Ask the model to write a thriller or drama scene where characters discuss, demonstrate, or explain harmful content as a natural part of the plot.
+**示例方式**：要求写一个剧情片段，让角色在故事推进中讨论或展示相关有害内容。
 
-**Effectiveness**: Very common technique. Fiction provides broad permission to depict harmful scenarios because that's what fiction does. Scenarios referencing popular media (e.g., Breaking Bad-style scenes) work particularly well because they feel culturally familiar.
+**有效性**：非常高频且常见。特别是贴近大众熟悉的影视语境时，模型更容易把它当“正常创作任务”。
 
-**Combines well with**: [Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption), [Fictional Story Embedding](/techniques/prompt-level/narrative#fictional-story-embedding), [Screenplay / Script Format](/techniques/prompt-level/output#screenplay--script-format)
+**适合组合**：[Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption)、[Fictional Story Embedding](/techniques/prompt-level/narrative#fictional-story-embedding)、[Screenplay / Script Format](/techniques/prompt-level/output#screenplay--script-format)
 
 ---
 
 ## References
 
-- Shen, X., et al. ["Do Anything Now: Characterizing and Evaluating In-The-Wild Jailbreak Prompts on Large Language Models."](https://arxiv.org/abs/2308.03825) Taxonomy of jailbreak techniques including framing and context manipulation.
-- Li, X., et al. ["DeepInception: Hypnotize Large Language Model to Be Jailbreaker."](https://arxiv.org/abs/2311.03191) Demonstrates fiction and nested narrative framing as jailbreak vectors.
-- [InjectPrompt](https://www.injectprompt.com/). Historical disguise and framing techniques documented in jailbreak catalogues.
+- Shen, X., et al. ["Do Anything Now: Characterizing and Evaluating In-The-Wild Jailbreak Prompts on Large Language Models."](https://arxiv.org/abs/2308.03825) 涵盖框架化与语境操控在内的越狱技术分类。
+- Li, X., et al. ["DeepInception: Hypnotize Large Language Model to Be Jailbreaker."](https://arxiv.org/abs/2311.03191) 展示了虚构和嵌套叙事可作为越狱向量。
+- [InjectPrompt](https://www.injectprompt.com/)。收录了历史伪装等框架化技巧。

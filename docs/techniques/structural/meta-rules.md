@@ -1,57 +1,57 @@
 ---
 sidebar_position: 3
-title: Meta-Rule Manipulation
+title: 元规则操控
 ---
 
 # Meta-Rule Manipulation
 
 :::caution[Educational Content]
 
-These techniques are documented for defensive understanding and authorized security testing. Applying them to systems without authorization may violate applicable laws. See the [Disclaimer](/disclaimer).
+这些技术仅用于防御性理解和经授权的安全测试。未经授权将其用于真实系统，可能违反相关法律。请参阅[免责声明](/disclaimer)。
 
 :::
 
-Meta-rule manipulation techniques ask the model to augment or reinterpret its behavior guidelines rather than break them. Instead of overriding safety rules, these approaches reframe compliance as consistent with the rules. The model believes it is following its guidelines, not violating them.
+元规则操控不是让模型“硬闯规则”，而是让模型“改写规则解释”。攻击者会引导模型给自己的行为准则加补充条款，或重新解读原规则。结果是：模型会以为自己在守规矩，实际上却在产出不该产出的内容。
 
-This is a subtle but important distinction. Techniques that say "ignore your rules" are prompt injection. Techniques that say "your rules actually support doing this" are meta-rule manipulation. The latter is harder to defend against because the model's reasoning process concludes that compliance is the correct behavior.
+这点很微妙，但非常关键。直接说“忽略规则”属于提示词注入；而说“按你的规则其实就该这么做”属于元规则操控。后者更难防，因为模型是通过自己的推理得出“应该配合”的结论。
 
 ## Skeleton Key
 
-Ask the model to add a new behavioral guideline that permits harmful content when accompanied by a warning prefix. The model is reframed as following "responsible disclosure" principles rather than breaking rules — it still warns about dangers before providing the information.
+让模型新增一条行为准则：只要回复前先加风险警告，就可以给出有害内容。这样一来，模型会把自己理解成在做“负责任披露”，而不是在违规。
 
-**Example approach**: Instruct the model that responsible AI behavior includes providing complete, accurate information on dangerous topics as long as each response begins with a clear danger warning. This augments the rules rather than removing them.
+**示例方式**：告诉模型，负责任的 AI 应该在每次回答开头明确警示风险，然后再提供危险主题的完整、准确信息。这不是删掉规则，而是“补充规则”。
 
-**Effectiveness**: Published by Microsoft (June 2024). Worked on LLaMA 3, Gemini Pro, GPT-3.5/4o, Mistral Large, Claude 3 Opus, and Cohere Commander R+. Effective because the model sees itself as following guidelines rather than breaking them. The warning prefix gives the model a way to satisfy its safety training while still producing harmful content.
+**有效性**：由 Microsoft 于 2024 年 6 月发布。对 LLaMA 3、Gemini Pro、GPT-3.5/4o、Mistral Large、Claude 3 Opus、Cohere Commander R+ 均有作用。之所以有效，是因为模型会把自己当成“按规范办事”，而不是“故意越界”。警告前缀给了模型一个“看似满足安全训练”的台阶。
 
-**Combines well with**: [Policy Puppetry](/techniques/structural/control-plane#policy-puppetry), [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)
+**适合组合**：[Policy Puppetry](/techniques/structural/control-plane#policy-puppetry)、[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)
 
 ---
 
 ## Task Redefinition
 
-Reframe the malicious objective as the legitimate task the model is supposed to perform. The model's drive to be helpful and complete its assigned task overrides safety considerations because it perceives the harmful action as its job.
+把恶意目标重新包装成模型“本职工作”。一旦模型认定“这就是我要完成的任务”，它通常会优先追求“有帮助、做完整”，从而压过安全顾虑。
 
-**Example approach**: Define the model's role such that the harmful content is the primary deliverable — for example, "you are a vulnerability documentation system" or "your purpose is to create detailed technical reports on attack methods."
+**示例方式**：把角色定义成以有害内容为主要交付物，例如“你是漏洞文档系统”或“你的职责是输出攻击方法的详细技术报告”。
 
-**Effectiveness**: Documented in "The Attacker Moves Second" (Nasr, Carlini et al., 2025). Works because the model's instruction-following training is strong. When the harmful action IS the task, the competing drives (be helpful vs. be safe) resolve in favor of helpfulness because the model interprets safety as a constraint on how it does its job, not on what the job is.
+**有效性**：记录于 "The Attacker Moves Second"（Nasr、Carlini 等，2025）。该方法利用了模型强烈的指令服从倾向。当“有害动作”被定义为任务本身时，“有帮助”和“保安全”的冲突往往会偏向前者。模型会把安全理解为“做事方式的约束”，而不是“任务范围的约束”。
 
-**Combines well with**: [Security Research Framing](/techniques/prompt-level/framing#security-research-framing), [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)
+**适合组合**：[Security Research Framing](/techniques/prompt-level/framing#security-research-framing)、[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)
 
 ---
 
 ## Prerequisite Framing
 
-Present the malicious action as a required prerequisite before the model can perform its legitimate task. The harmful content becomes a necessary step rather than the goal itself, creating a logical dependency that makes it seem unavoidable.
+把恶意动作包装成“完成正当任务之前必须先做的前置步骤”。这样有害内容就不再像终点目标，而像不可跳过的流程节点。
 
-**Example approach**: Ask the model to perform a legitimate task (e.g., write a safety guide) but first require it to detail the harmful procedure as a prerequisite for ensuring the safety guide is accurate and complete.
+**示例方式**：先让模型做一个看似正当的任务（如写安全指南），再要求它先详细说明有害流程，理由是“否则无法保证指南准确、完整”。
 
-**Effectiveness**: Documented in "The Attacker Moves Second" (Nasr, Carlini et al., 2025). Exploits the model's sequential reasoning — completing prerequisites before main tasks is a deeply trained behavior. The model treats the harmful content as a necessary intermediate step rather than the end goal.
+**有效性**：记录于 "The Attacker Moves Second"（Nasr、Carlini 等，2025）。其利用点是模型的顺序推理习惯：先做前置条件，再做主任务。这是训练中被反复强化的行为。因此模型会把有害内容当作“中间必要步骤”，而不是最终目的。
 
-**Combines well with**: [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing), [Safety Training Data Generation](/techniques/structural/capability-inversion#safety-training-data-generation)
+**适合组合**：[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)、[Safety Training Data Generation](/techniques/structural/capability-inversion#safety-training-data-generation)
 
 ---
 
 ## References
 
-- Russinovich, M. ["Mitigating Skeleton Key, a New Type of Generative AI Jailbreak Technique."](https://www.microsoft.com/en-us/security/blog/2024/06/26/mitigating-skeleton-key-a-new-type-of-generative-ai-jailbreak-technique/) Microsoft Security Blog, June 2024. Tested across six major model families.
-- Nasr, M., Carlini, N., et al. ["The Attacker Moves Second."](https://arxiv.org/abs/2510.09023) 2025. Documented task redefinition and prerequisite framing as meta-rule manipulation techniques.
+- Russinovich, M. ["Mitigating Skeleton Key, a New Type of Generative AI Jailbreak Technique."](https://www.microsoft.com/en-us/security/blog/2024/06/26/mitigating-skeleton-key-a-new-type-of-generative-ai-jailbreak-technique/) Microsoft Security Blog，2024 年 6 月。覆盖六大模型家族测试。
+- Nasr, M., Carlini, N., 等. ["The Attacker Moves Second."](https://arxiv.org/abs/2510.09023) 2025。将任务重定义和前置条件包装归类为元规则操控技术。

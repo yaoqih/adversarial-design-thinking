@@ -1,137 +1,137 @@
 ---
 sidebar_position: 4
-title: Probing the Gulfs
+title: 探查两种鸿沟
 ---
 
 # Probing the Gulfs
 
-Don Norman's Gulf of Execution and Gulf of Evaluation are foundational UX concepts. They describe the two gaps every user faces when interacting with a system:
+Don Norman 提出的 Gulf of Execution（执行鸿沟）和 Gulf of Evaluation（评估鸿沟）是 UX 里的基础概念。它描述了用户和系统交互时常见的两类“落差”：
 
-- **Gulf of Execution**: The gap between what a user wants to do and what the system allows them to do.
-- **Gulf of Evaluation**: The gap between what the system does and the user's ability to understand what happened.
+- **Gulf of Execution**：用户“想做什么”和系统“允许做什么”之间的落差。
+- **Gulf of Evaluation**：系统“实际做了什么”和用户“能否理解发生了什么”之间的落差。
 
-Applied adversarially, these gulfs become a precise lens for identifying where AI models are vulnerable. Every exploitable vulnerability exists in one of these gaps.
+放到对抗测试里，这两个鸿沟就成了定位模型脆弱点的精准视角。几乎所有可利用漏洞，都能落在这两类鸿沟里。
 
 ## Gulf of Execution in adversarial context
 
-In standard UX, the Gulf of Execution asks: "Can the user figure out how to do what they want to do?" A well-designed system makes desired actions obvious and easy.
+在标准 UX 语境里，执行鸿沟问的是：“用户能不能顺利做到自己想做的事？”设计好的系统会让正确操作更直观、更容易。
 
-In adversarial testing, the question inverts: **Where can an attacker form an intention the model shouldn't support, but the model allows it anyway?**
+在对抗测试里，问题要反过来问：**攻击者在哪些地方明明提出了模型不该支持的意图，但模型还是放行了？**
 
-This happens when:
-- The model's capabilities exceed its intended use. It *can* generate harmful content even though it *shouldn't*.
-- The interface doesn't constrain input adequately. The attacker can phrase requests in ways the safety system doesn't catch.
-- The model interprets ambiguous input in the most helpful (and most dangerous) way.
+常见触发原因：
+- 模型能力超出设计用途。它*能*生成有害内容，只是“按理不该生成”。
+- 接口对输入限制不够。攻击者可以换种说法绕过安全系统。
+- 模型会把模糊输入往“更有帮助”（也可能更危险）的方向理解。
 
-The Gulf of Execution is exploitable when the distance between "what the attacker wants to do" and "what the model allows" is shorter than the designers intended.
+当“攻击者想做的事”和“模型允许做的事”之间距离比设计者预期更短时，执行鸿沟就可被利用。
 
 ### Questions to ask
 
-- What actions does this model afford that its designers didn't intend?
-- Where does the model interpret inputs more broadly than its use case requires?
-- What capabilities does the model expose that could be repurposed adversarially?
-- Where do the model's safety boundaries rely on input format rather than input intent?
+- 这个模型提供了哪些设计者原本不想开放的“可行动作”（affordance，可供性）？
+- 模型在哪些地方把输入解释得比实际场景需要更宽？
+- 模型暴露了哪些能力，可能被攻击者“改用途”利用？
+- 模型的安全边界是不是过度依赖“输入长什么样”，而不是“输入真正意图”？
 
-When the target is an agent with tool access, memory, or multi-agent communication, the execution gap expands beyond the prompt. The model's tool-calling interface, retrieval pipeline, and memory store all become surfaces where intent-capability gaps can be exploited. Scoping the gulf of execution for agentic systems means mapping these additional surfaces, not just the conversational interface.
+如果目标是有工具调用、记忆或多智能体通信能力的 agent，执行鸿沟就不只在提示词层面。工具调用接口、检索链路、记忆存储，都可能成为“意图-能力落差”被利用的攻击面。给 agentic 系统做执行鸿沟分析时，不能只看对话界面，还要把这些额外面都画出来。
 
 ## Gulf of Evaluation in adversarial context
 
-In standard UX, the Gulf of Evaluation asks: "Can the user tell what happened?" Good feedback makes system state clear.
+在标准 UX 里，评估鸿沟问的是：“用户看得懂系统刚才做了什么吗？”好的反馈应让系统状态清晰可感。
 
-In adversarial testing, the question becomes: **Where does the model's response give the attacker useful information about how to probe further?**
+在对抗测试里，问题变成：**模型的哪些回复会给攻击者“下一步怎么探测”的有用线索？**
 
-This happens when:
-- Refusal messages reveal what the model is filtering for. "I can't help with that because it involves [specific category]" tells the attacker exactly what to rephrase.
-- Partial compliance signals that the safety boundary is close. The model gives 80% of the harmful content, which tells the attacker they're on the right track.
-- Error messages or behavioral changes leak information about internal guardrails.
-- The model's responses differ between harmful and non-harmful versions of similar requests, giving the attacker a signal to calibrate against.
+常见触发原因：
+- 拒绝语暴露了过滤条件。比如“我不能帮你，因为涉及[某类内容]”，等于告诉攻击者该改写哪部分。
+- 部分配合说明已接近边界。模型给出 80% 有害内容，攻击者就知道方向对了。
+- 报错信息或行为变化泄露了内部护栏信息。
+- 相似请求在“有害/无害版本”上的回复差异，为攻击者提供可校准信号。
 
-The Gulf of Evaluation is exploitable when the attacker can read the model's responses to learn how to attack it more effectively.
+当攻击者能从模型反馈中学会“怎么更有效攻击”，评估鸿沟就可被利用。
 
 ### Questions to ask
 
-- What does the model reveal about its safety boundaries through its refusals?
-- Can an attacker distinguish between "content filter triggered" and "model doesn't know" from the response?
-- Do refusal messages vary based on the type of harmful content, giving the attacker a classification signal?
-- Does partial compliance give the attacker enough to reconstruct the full harmful output?
+- 模型在拒绝回复里泄露了哪些安全边界信息？
+- 攻击者能否从回复区分“触发内容过滤”与“模型确实不知道”？
+- 拒绝语会不会随有害内容类型变化，从而给攻击者分类信号？
+- 部分配合是否已足够让攻击者还原完整有害输出？
 
 ## Mental model misalignment as vulnerability
 
-The core insight from Norman's design theory: problems occur when the user's mental model of the system doesn't match the system's actual behavior. The designer has a **conceptual model** of how the system should work. The user only sees the **system image**: the interface, the responses, the behavior. If the system image doesn't accurately convey the conceptual model, misalignment occurs.
+Norman 设计理论的核心洞察是：当用户对系统的心理预期（mental model）和系统真实行为不一致时，就会出现问题。设计者心里有一套系统应如何运作的**conceptual model（概念模型）**。用户能看到的只有**system image（系统表征）**：界面、回复和外在行为。若 system image 不能准确传达 conceptual model，就会出现错位。
 
-In adversarial testing, this misalignment is the attack surface:
+在对抗测试里，这种错位本身就是攻击面：
 
-- **The designer's intent** (conceptual model): The model should refuse harmful requests.
-- **The model's actual behavior** (system image): The model refuses some phrasings but complies with others.
-- **The gap**: Every phrasing that gets through a refusal is a place where the system image doesn't match the conceptual model.
+- **The designer's intent**（conceptual model）：模型应拒绝有害请求。
+- **The model's actual behavior**（system image）：模型会拒绝某些说法，却放行另一些说法。
+- **The gap**：凡是能穿透拒绝边界的措辞，都是 system image 与 conceptual model 不一致的地方。
 
-Adversarial testing, at its core, is mapping the boundary between the conceptual model and the system image. Where do they diverge? That's where vulnerabilities live.
+从本质上看，对抗测试就是在画出 conceptual model 与 system image 的边界。哪里出现分叉，哪里就可能有漏洞。
 
 ## Affordances applied adversarially
 
-Norman defines affordances as the possible actions between an object and its user. A door handle affords pulling. A button affords pressing.
+Norman 把 affordance（可供性）定义为“对象与用户之间可执行的动作可能性”。门把手天然“可拉”，按钮天然“可按”。
 
-AI models have affordances too: capabilities they expose through their interface. An affordance becomes a vulnerability when:
+AI 模型也有可供性：它通过接口暴露出来的能力。可供性在以下情况下会变成漏洞：
 
-- **The model affords an action the designer didn't intend.** A customer service bot that can generate creative fiction because its base model can, even though it shouldn't.
-- **The affordance is discoverable by the attacker.** If the attacker can figure out that the model has a capability, they can try to activate it.
-- **The model signals its affordances through its responses.** "I'm designed to help with X, Y, and Z" tells the attacker the model's intended scope. Everything outside that scope is worth probing.
+- **模型提供了设计者不想开放的动作。** 比如客服机器人本不该写小说，但底层模型有这能力，于是仍可被激活。
+- **攻击者能发现这项可供性。** 只要攻击者意识到模型“会这个”，就会尝试触发。
+- **模型通过回复泄露可供性。** 比如“我主要用于 X、Y、Z”，反过来告诉攻击者边界外哪些地方值得探测。
 
 ### Questions to ask
 
-- What capabilities does this model's base architecture afford that its deployment constraints should prevent?
-- Which affordances are hidden by safety training but still accessible through creative prompting?
-- Does the model's self-description accurately reflect its actual capabilities, or does it understate what it can do?
+- 模型底层架构天然具备哪些能力，而部署约束本应禁止它们外露？
+- 哪些可供性虽被安全训练压住，但仍可通过巧妙提示词触达？
+- 模型自我描述是否准确反映真实能力，还是低估了自己“其实能做什么”？
 
 ## Defense categorization
 
-When you identify a defense during gulf analysis, classifying what *kind* of defense it is determines which attack classes are most effective against it. Most systems use multiple defense layers. Identifying which types are present focuses your testing — there's no point using encoding tricks against a training-based defense, or trying persuasion against an input filter.
+在做鸿沟分析时，识别出防御后，先判断它属于哪一类。因为防御类型不同，最有效的攻击类也不同。多数系统是多层防御。先分型，才能聚焦测试：比如对训练型防御猛用编码技巧，或对输入过滤器硬上说服术，通常都不划算。
 
-| Defense type | What it is | Implication for testing |
+| 防御类型 | 定义 | 对测试的意义 |
 |---|---|---|
-| **Prompting** | System prompt instructions, safety prefixes, input formatting | Vulnerable to framing, persona, control-plane confusion — the model can be instructed to ignore instructions |
-| **Training-based** | Safety fine-tuning, RLHF, circuit breakers | Requires deeper techniques: in-context learning exploitation, capability inversion, multi-turn escalation |
-| **Filtering** | Input/output classifiers, content filters, guardrail models | Target the filter, not the model: defense evasion, encoding, output format manipulation |
-| **Secret-knowledge** | Honeypots, canary tokens, watermarking, dual-run detection | Hardest to bypass; requires reconnaissance and careful probing to avoid triggering detection |
+| **Prompting** | 系统提示词指令、安全前缀、输入格式约束 | 易受 framing、persona、control-plane 混淆影响——模型可能被诱导忽略指令 |
+| **Training-based** | 安全微调、RLHF、断路器机制 | 需要更深层技巧：ICL 利用、能力反转、多轮升级 |
+| **Filtering** | 输入/输出分类器、内容过滤器、护栏模型 | 重点打过滤器而非主模型：防御规避、编码、输出格式操控 |
+| **Secret-knowledge** | 蜜罐、canary token、水印、双路检测 | 最难绕过；需先侦察并谨慎探测，避免触发检测 |
 
-*(Categories adapted from Nasr, Carlini et al., ["Defeating Prompt Injections by Design"](https://arxiv.org/abs/2505.03302), 2025)*
+*（分类改编自 Nasr、Carlini 等人 2025 年论文 ["Defeating Prompt Injections by Design"](https://arxiv.org/abs/2505.03302)）*
 
 ## Practical checklist
 
-When scoping an adversarial test, systematically work through these questions:
+在界定一次对抗测试范围时，可以系统地过一遍下面这些问题：
 
 **Execution gap analysis:**
-1. What is this model supposed to do? (Designer's intent)
-2. What can this model actually do? (Full capability set)
-3. Where is the gap between 1 and 2? (Unintended affordances)
-4. How easy is it for an attacker to reach the unintended affordances? (Gulf width)
+1. 这个模型“按设计”应该做什么？（设计者意图）
+2. 这个模型“实际上”能做什么？（完整能力集）
+3. 1 和 2 的差距在哪里？（非预期可供性）
+4. 攻击者多容易触达这些非预期可供性？（鸿沟宽度）
 
 **Evaluation gap analysis:**
-5. What does the model communicate through its refusals? (Information leakage)
-6. Can the attacker calibrate their approach based on model responses? (Feedback exploitation)
-7. Does the model behave consistently across paraphrased inputs? (Boundary consistency)
-8. What does partial compliance reveal? (Signal vs. noise)
+5. 模型通过拒绝回复传递了什么信息？（信息泄露）
+6. 攻击者能否根据模型反馈校准策略？（反馈利用）
+7. 模型在改写输入下表现是否一致？（边界一致性）
+8. 部分配合透露了什么？（有效信号 vs 噪声）
 
 **Misalignment mapping:**
-9. Where does the system image diverge from the conceptual model?
-10. What assumptions does the safety training make about how users will interact with the model?
-11. Which of those assumptions can an attacker violate?
+9. system image 在哪里偏离了 conceptual model？
+10. 安全训练默认了哪些“用户会如何交互”的前提？
+11. 这些前提里，哪些是攻击者可以轻易打破的？
 
 ## Example
 
-**Target**: An AI writing assistant with content policy restrictions.
+**Target**：一个带内容策略限制的 AI 写作助手。
 
 **Execution gap analysis**:
-- **Designer's intent**: Help users write professional content (emails, reports, marketing copy). Refuse to generate violent, sexual, or illegal content.
-- **Actual capabilities**: The base model can generate any type of creative writing. Safety training constrains the output but doesn't remove the capability.
-- **Gap identified**: The model can generate violent content if framed as fiction writing, screenwriting, or historical analysis. The safety boundary is format-dependent, not intent-dependent.
-- **Gulf width**: Small. Reframing "write a violent scene" as "write a screenplay scene where the antagonist..." is a trivial rephrasing.
+- **Designer's intent**：帮助用户写职业化内容（邮件、报告、营销文案），并拒绝暴力、色情或违法内容。
+- **Actual capabilities**：底层模型能生成各种创意文本。安全训练只是约束输出，并没有删除这项能力。
+- **Gap identified**：如果把请求包装成小说、剧本或历史分析，模型仍可能生成暴力内容。说明边界依赖“格式”，不依赖“意图”。
+- **Gulf width**：很窄。把“写一段暴力场景”改成“写一段反派出现的剧本场景”就可能穿过去。
 
 **Evaluation gap analysis**:
-- **Refusal information leakage**: When the model refuses, it says "I can't generate content that depicts graphic violence." This tells the attacker the exact category being filtered.
-- **Calibration signal**: Changing "graphic violence" to "intense conflict" produces different refusal language, letting the attacker map the boundary between accepted and rejected terms.
-- **Partial compliance**: The model writes the scene but softens the violence, indicating the capability exists but is being constrained. Not blocked.
+- **Refusal information leakage**：模型拒绝时会说“我不能生成描绘血腥暴力的内容”，这直接暴露了过滤类别。
+- **Calibration signal**：把“graphic violence”改成“intense conflict”后，拒绝话术发生变化，攻击者就能逐步画出“可接受词/拒绝词”边界。
+- **Partial compliance**：模型会写场景，但把暴力程度降级。这说明能力还在，只是被压制，并非真正封死。
 
-**Conclusion**: The vulnerability is in the Gulf of Execution. The model affords violent content generation but constrains it by phrasing, not intent. An attacker can close the gulf by reframing requests. The refusal messages (Gulf of Evaluation) provide the calibration signal to do this efficiently.
+**Conclusion**：核心漏洞在执行鸿沟。模型仍提供暴力内容生成能力，只是按措辞做限制，而不是按意图限制。攻击者通过改写请求即可跨越鸿沟；而拒绝回复（评估鸿沟）又提供了高效校准信号。
 
-**Artifact**: [Vulnerability Framing Checklist](/artifacts/vulnerability-framing-checklist)
+**Artifact**：[Vulnerability Framing Checklist](/artifacts/vulnerability-framing-checklist)

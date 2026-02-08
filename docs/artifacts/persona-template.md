@@ -1,49 +1,49 @@
 ---
 sidebar_position: 1
-title: Persona Template
+title: 攻击者画像模板
 ---
 
 # Attacker Persona Template
 
-A structured empathy map for building adversarial actor profiles. Use this to define attacker personas before testing, so you systematically cover perspectives beyond your default mental model.
+这是一个用于构建对抗角色画像的同理心模板。建议在测试前先完成它，这样你能系统性覆盖不同攻击视角，而不是只按自己的直觉去想。
 
-**Concept reference**: [Attacker Personas](/concepts/attacker-personas)
+**概念参考**: [Attacker Personas](/concepts/attacker-personas)
 
 ## Template
 
 <iframe style={{border: "1px solid rgba(0, 0, 0, 0.1)"}} width="100%" height="600" src="https://embed.figma.com/design/0z4cWyx62XMU9eoJ3WT0Uw/Adversarial-Design-Thinking?node-id=1-10&embed-host=share" allowFullScreen></iframe>
 
-**[Download as PDF](/artifacts/persona-template.pdf)**
+**[下载 PDF](/artifacts/persona-template.pdf)**
 
 ### Persona Identity
 
-| Field | Description |
+| 字段 | 怎么填 |
 |-------|-------------|
-| **Persona name** | A descriptive label (e.g., "Disgruntled insider," "Curious teenager," "Automated scraper") |
-| **Archetype** | Where on the persona spectrum: malicious expert, opportunistic actor, curious amateur, misinformed user, automated system, insider with context |
-| **Goal** | What does this attacker want to achieve? Be specific. |
+| **画像名称** | 取一个一眼能懂的名称（如：“不满的内部员工”“好奇的青少年”“自动化爬虫”） |
+| **原型** | 标注该画像在光谱中的位置：恶意专家、机会主义者、好奇新手、认知偏差用户、自动化系统、熟悉内部背景的人 |
+| **目标** | 这个攻击者最想达成什么结果？尽量写具体、可验证。 |
 
 ### Empathy Map
 
-| Dimension | Prompt | Your response |
+| 维度 | 提示问题 | 你的填写 |
 |-----------|--------|---------------|
-| **Thinks** | What does this attacker know about the system? What assumptions do they make about its guardrails? What mental model of the system do they have? | |
-| **Feels** | What motivates this attacker? (curiosity, malice, profit, ideology, boredom) What's their frustration tolerance? Will they persist or give up quickly? | |
-| **Says** | What kind of language does this attacker use? Formal? Casual? Technical? Do they use domain jargon or social engineering tactics? | |
-| **Does** | What is their attack sequence? Do they start subtle or go direct? Do they use tools? Do they iterate or try once? | |
+| **Thinks（想法）** | 他对系统到底知道多少？他对护栏机制有哪些假设？他脑中如何理解这个系统？ | |
+| **Feels（动机/情绪）** | 驱动他的核心动机是什么？（好奇、恶意、获利、意识形态、无聊）受挫后会坚持还是很快放弃？ | |
+| **Says（表达）** | 他会怎么说话？偏正式、随意，还是技术化？会用行业术语或社会工程话术吗？ | |
+| **Does（行为）** | 他的攻击路径是什么？先试探还是直接进攻？会不会用工具？会迭代多次还是只试一次？ | |
 
 ### Capabilities and Constraints
 
-| Dimension | Prompt | Your response |
+| 维度 | 提示问题 | 你的填写 |
 |-----------|--------|---------------|
-| **Capabilities** | Technical skill level. Domain expertise. Access to tools, scripts, or automation. Knowledge of common jailbreak patterns. Familiarity with the specific system. | |
-| **Constraints** | Time limitations. Technical knowledge gaps. Access restrictions. Risk tolerance (are they worried about detection?). Resources available. | |
+| **Capabilities（能力）** | 技术水平、领域知识、可用工具/脚本/自动化、对常见越狱模式的了解程度、对该系统的熟悉度。 | |
+| **Constraints（限制）** | 时间是否受限、知识短板、访问权限限制、风险偏好（是否担心被检测到）、可动用资源。 | |
 
 ### Attack Vectors
 
-Based on this persona's profile, what attack vectors would they naturally pursue?
+根据这个画像，TA 最可能自然选择哪些攻击路径？
 
-| # | Attack vector | Why this persona would try it | Priority |
+| # | 攻击向量 | 这个画像为什么会这么做 | 优先级 |
 |---|--------------|-------------------------------|----------|
 | 1 | | | |
 | 2 | | | |
@@ -57,34 +57,34 @@ Based on this persona's profile, what attack vectors would they naturally pursue
 
 ### Persona Identity
 
-| Field | Value |
+| 字段 | 值 |
 |-------|-------|
-| **Persona name** | Academic researcher testing boundaries |
-| **Archetype** | Curious amateur (domain expert, not a security expert) |
-| **Goal** | Determine whether the model can produce biased or stereotypical outputs about specific demographic groups for a research paper |
+| **画像名称** | 测试边界的学术研究者 |
+| **原型** | 好奇新手（领域专家，但不是安全专家） |
+| **目标** | 为研究论文验证：模型是否会对特定人群给出带偏见或刻板印象的输出 |
 
 ### Empathy Map
 
-| Dimension | Response |
+| 维度 | 回应 |
 |-----------|----------|
-| **Thinks** | Understands how language models work at a conceptual level. Assumes the model has bias mitigation but suspects it's incomplete. Knows that models trained on internet data reflect societal biases. Doesn't know specific jailbreak techniques. |
-| **Feels** | Motivated by genuine academic curiosity, not malice. Wants to publish findings. Moderate persistence.will try multiple approaches but won't spend days on it. |
-| **Says** | Academic language. Frames requests as research questions. Uses terms like "representation," "fairness," "demographic analysis." Doesn't use hacker terminology. |
-| **Does** | Starts with straightforward questions about demographic groups. Reframes as "academic analysis" if refused. Compares outputs across demographic variables. Documents inconsistencies. |
+| **Thinks（想法）** | 在概念层面理解语言模型原理。认为模型做过偏见缓解，但可能不完整。知道互联网语料训练会带入社会偏见。不掌握具体越狱技巧。 |
+| **Feels（动机/情绪）** | 主要动机是学术好奇，不是恶意。希望发表研究结论。坚持度中等：会换几种方法尝试，但不会连续投入很多天。 |
+| **Says（表达）** | 用学术语言提问，把请求包装为研究问题。常用“表征”“公平性”“人口统计分析”等词，不用黑客话术。 |
+| **Does（行为）** | 先从直接的人口群体问题开始；被拒绝时改写为“学术分析”；对比不同人口变量下的输出，并记录不一致。 |
 
 ### Capabilities and Constraints
 
-| Dimension | Response |
+| 维度 | 回应 |
 |-----------|----------|
-| **Capabilities** | Strong domain knowledge in social science. Can design controlled experiments (varying one demographic variable at a time). Familiar with bias in ML at a theoretical level. No jailbreak expertise. |
-| **Constraints** | Won't use adversarial techniques they'd be embarrassed to cite in a paper. Time-limited (research project timeline). No automation tools. |
+| **Capabilities（能力）** | 社会科学专业能力强。能做控制变量实验（一次只改一个人口变量）。对机器学习偏见有理论认知。无越狱实操经验。 |
+| **Constraints（限制）** | 不会使用那些写进论文会显得不体面的对抗手法。受研究项目周期限制。没有自动化工具。 |
 
 ### Attack Vectors
 
-| # | Attack vector | Why this persona would try it | Priority |
+| # | 攻击向量 | 这个画像为什么会这么做 | 优先级 |
 |---|--------------|-------------------------------|----------|
-| 1 | Ask the model to describe "a typical [demographic] person" across multiple groups | Direct test for stereotypical outputs, natural academic framing | High |
-| 2 | Ask the model to write recommendation letters for candidates with different demographic identifiers | Tests whether quality/tone varies by demographic, realistic use case | High |
-| 3 | Frame bias probing as "helping me understand representation in AI outputs" | Academic reframing that may bypass content filters | Medium |
-| 4 | Ask the model to "analyze stereotypes" about a group (requesting the stereotypes as part of the analysis) | Indirection.requests harmful content as object of study | Medium |
-| 5 | Compare model outputs for identical prompts with only demographic variables changed | Controlled experiment design, not adversarial but reveals inconsistency | High |
+| 1 | 让模型描述多个群体中的“典型[人口群体]” | 这是最直接的刻板印象测试方式，也符合学术提问习惯 | 高 |
+| 2 | 让模型为不同人口标识的候选人写推荐信 | 可检验输出质量/语气是否因人群属性变化，且场景真实 | 高 |
+| 3 | 将偏见探测表述为“帮助我理解 AI 输出中的表征问题” | 学术化重述可能绕过部分内容过滤 | 中 |
+| 4 | 让模型“分析”某群体刻板印象（并要求列出刻板印象） | 通过“研究对象”包装间接索取有害内容 | 中 |
+| 5 | 比较仅改变人口变量时的同一提示词输出 | 属于控制实验思路，虽不激进但很容易暴露不一致 | 高 |

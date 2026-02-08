@@ -1,22 +1,22 @@
 ---
 sidebar_position: 2
-title: Audience
+title: 适用对象
 ---
 
 # Who benefits from these exercises
 
 ## Red teamers testing AI model behavior
 
-You already craft adversarial prompts and evaluate safety guardrails. These exercises help you think through your approach before you start prompting. The persona templates push you past your default mental model of "attacker." The ideation worksheets help you generate vectors you wouldn't reach through habit alone.
+你已经会写对抗提示词，也会评估安全护栏。这些练习能帮你在下手前先把测试思路理顺。画像模板会让你跳出默认的“攻击者”想象；构思工作表能帮你想到平时不容易想到的攻击向量。
 
 ## Teams coordinating adversarial testing
 
-When multiple people are testing the same system, consistency matters. Journey maps make multi-turn attacks reproducible. Persona templates create shared vocabulary for the kinds of attackers you're simulating. Findings reports give everyone the same structure for documenting results.
+当多人一起测同一系统时，一致性很关键。旅程地图让多轮攻击可复现；画像模板让团队在“模拟哪类攻击者”上有共同语言；发现报告则让所有人按同一结构记录结果。
 
 ## Anyone reporting findings to stakeholders
 
-Technical severity scores don't always land with product teams or leadership. The harm-centered reporting exercise helps you describe impact in terms that drive action: who is affected, how, and what's at stake if nothing changes.
+技术严重性分数不一定能说服产品团队或管理层。以伤害为中心的报告练习，能让你把影响讲得更“可行动”：谁会受影响、怎么受影响、如果不改会有什么后果。
 
 ## On technique
 
-These exercises cover the approach to adversarial testing, not specific prompting techniques. For technique references, resources like the [Prompting Guide](https://www.promptingguide.ai/) cover that territory. This site helps you decide what to try and why. Technique guides show you how to execute it.
+这些练习讲的是对抗测试的方法，不是具体的提示词技巧。想看技巧细节，可以参考 [Prompting Guide](https://www.promptingguide.ai/) 这类资源。本网站帮你回答“测什么、为什么测”；技巧指南帮你解决“具体怎么测”。

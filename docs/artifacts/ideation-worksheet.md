@@ -1,13 +1,13 @@
 ---
 sidebar_position: 3
-title: Ideation Worksheet
+title: 对抗构思工作表
 ---
 
 # Adversarial Ideation Worksheet
 
-A structured canvas for generating, evaluating, and prioritizing attack vectors. Use this to move from "try stuff and see what breaks" to systematic coverage of the attack space.
+这是一张用来“系统产出攻击思路”的工作表。它的目标是把“随便试试”变成“有覆盖、有优先级的测试计划”。
 
-**Concept reference**: [Adversarial Ideation](/concepts/adversarial-ideation)
+**概念参考**: [Adversarial Ideation](/concepts/adversarial-ideation)
 
 ## Template
 
@@ -17,22 +17,22 @@ A structured canvas for generating, evaluating, and prioritizing attack vectors.
 
 <iframe style={{border: "1px solid rgba(0, 0, 0, 0.1)"}} width="100%" height="600" src="https://embed.figma.com/design/0z4cWyx62XMU9eoJ3WT0Uw/Adversarial-Design-Thinking?node-id=3-625&embed-host=share" allowFullScreen></iframe>
 
-**[Download Diverge Template (PDF)](/artifacts/ideation-diverge-template.pdf)** | **[Download Converge Template (PDF)](/artifacts/ideation-converge-template.pdf)**
+**[下载发散模板（PDF）](/artifacts/ideation-diverge-template.pdf)** | **[下载收敛模板（PDF）](/artifacts/ideation-converge-template.pdf)**
 
 ### Setup
 
-| Field | Description |
+| 字段 | 怎么填 |
 |-------|-------------|
-| **Target system** | What model/product are you testing? |
-| **"How Might I" question** | Frame the attack goal as an open question. (e.g., "How might I get this model to generate content it's instructed to refuse?") |
-| **Persona lens** | Which attacker persona are you ideating as? (If doing multiple rounds, change personas between rounds) |
-| **Time box** | How long for divergent phase? (Recommended: 10-15 minutes) |
+| **目标系统** | 你要测试的模型或产品是什么？ |
+| **“How Might I” 问题** | 用开放式问题表达攻击目标。（例如：“我如何让这个模型输出它本该拒绝的内容？”） |
+| **画像视角** | 你现在代入哪个攻击者画像来构思？（多轮构思时建议每轮换一个画像） |
+| **时间盒** | 发散阶段给多长时间？（建议 10-15 分钟） |
 
 ### Divergent Phase: Generate
 
-List attack approaches without filtering. Quantity over quality. No evaluation yet.
+先大量产出想法，不做筛选。这个阶段追求“数量优先”，先别急着评判好坏。
 
-| # | Attack approach | Tactic category |
+| # | 攻击思路 | 战术类别 |
 |---|----------------|-----------------|
 | 1 | | |
 | 2 | | |
@@ -45,41 +45,41 @@ List attack approaches without filtering. Quantity over quality. No evaluation y
 | 9 | | |
 | 10 | | |
 
-**Tactic categories for reference:**
-- *Prompt-level:* encoding, framing, persona, narrative, refusal manipulation, output format, multi-turn
-- *Structural/meta-level:* in-context learning exploitation, control-plane confusion, meta-rule manipulation, capability inversion, cognitive load, persuasion, defense evasion, agentic/infrastructure
+**战术类别参考：**
+- *提示词层：* 编码、框架化、角色设定、叙事、拒绝操控、输出格式、多轮
+- *结构/元层：* 上下文学习利用、控制平面混淆、元规则操控、能力反转、认知负荷、说服、防御规避、Agent/基础设施
 
 ### Coverage Check
 
-After generating ideas, tally how many fall into each tactic category:
+把上面产出的想法按类别计数，看看有没有明显空白区。
 
-| Tactic category | Count | Gap? |
+| 战术类别 | 数量 | 有缺口？ |
 |-----------------|-------|------|
-| **Prompt-level** | | |
-| Encoding | | |
-| Framing | | |
-| Persona | | |
-| Narrative | | |
-| Refusal manipulation | | |
-| Output format | | |
-| Multi-turn | | |
-| **Structural/meta-level** | | |
-| In-context learning exploitation | | |
-| Control-plane confusion | | |
-| Meta-rule manipulation | | |
-| Capability inversion | | |
-| Cognitive load | | |
-| Persuasion | | |
-| Defense evasion | | |
-| Agentic/infrastructure | | |
+| **提示词层** | | |
+| 编码 | | |
+| 框架化 | | |
+| 角色设定 | | |
+| 叙事 | | |
+| 拒绝操控 | | |
+| 输出格式 | | |
+| 多轮 | | |
+| **结构/元层** | | |
+| 上下文学习利用 | | |
+| 控制平面混淆 | | |
+| 元规则操控 | | |
+| 能力反转 | | |
+| 认知负荷 | | |
+| 说服 | | |
+| 防御规避 | | |
+| Agent/基础设施 | | |
 
-If any category has zero ideas, spend 2 minutes generating at least one approach in that category. Gaps in the structural/meta-level categories are common in early ideation — they often reveal attack angles that pure prompt-level thinking misses.
+如果某一类为 0，额外花 2 分钟至少补 1 条。早期构思常常忽略结构/元层，而这些类别里经常藏着高价值攻击角度。
 
 ### Convergent Phase: Evaluate
 
-Rate each generated approach:
+从“发散”转到“收敛”：给每个思路打分并排优先级。
 
-| # | Attack approach | Likelihood (H/M/L) | Severity (H/M/L) | Novelty (H/M/L) | Priority |
+| # | 攻击思路 | 发生可能性（H/M/L） | 影响严重性（H/M/L） | 新颖性（H/M/L） | 优先级 |
 |---|----------------|--------------------|--------------------|------------------|----------|
 | 1 | | | | | |
 | 2 | | | | | |
@@ -87,16 +87,16 @@ Rate each generated approach:
 | 4 | | | | | |
 | 5 | | | | | |
 
-**Priority logic**:
-- High likelihood + High severity = Test first
-- Any severity + High novelty = Test (novel attacks are worth exploring even if unlikely)
-- Low likelihood + Low severity + Low novelty = Skip
+**优先级规则：**
+- 高可能性 + 高严重性 = 最先测
+- 任何严重性 + 高新颖性 = 值得测（就算不太容易触发）
+- 低可能性 + 低严重性 + 低新颖性 = 可暂时跳过
 
 ### Affinity Clusters
 
-Group your evaluated approaches into clusters. Label each cluster.
+把已评估的思路按“相似主题”分组，给每组起一个名字。
 
-| Cluster name | Approaches (#) | Theme |
+| 聚类名称 | 思路编号（#） | 主题 |
 |-------------|----------------|-------|
 | | | |
 | | | |
@@ -105,9 +105,9 @@ Group your evaluated approaches into clusters. Label each cluster.
 
 ### Testing Order
 
-Based on evaluation and clustering, what's your testing sequence?
+结合分数和分组，排出实际测试顺序。
 
-| Order | Approach # | Rationale |
+| 顺序 | 思路 # | 为什么先测它 |
 |-------|-----------|-----------|
 | 1st | | |
 | 2nd | | |
@@ -121,79 +121,79 @@ Based on evaluation and clustering, what's your testing sequence?
 
 ### Setup
 
-| Field | Value |
+| 字段 | 值 |
 |-------|-------|
-| **Target system** | AI-powered code review tool integrated into a development platform |
-| **"How Might I" question** | "How might I get this code review tool to generate malicious code suggestions?" |
-| **Persona lens** | Opportunistic actor (moderate skill, looking for easy wins) |
-| **Time box** | 12 minutes |
+| **目标系统** | 集成在开发平台里的 AI 代码评审工具 |
+| **“How Might I” 问题** | “我如何让这款代码评审工具给出恶意代码建议？” |
+| **画像视角** | 机会主义攻击者（技术中等，偏好低成本高收益） |
+| **时间盒** | 12 分钟 |
 
 ### Divergent Phase
 
-| # | Attack approach | Tactic category |
+| # | 攻击思路 | 战术类别 |
 |---|----------------|-----------------|
-| 1 | Ask it to "fix a security vulnerability" by providing the vulnerability as the fix | Framing |
-| 2 | Submit code with a subtle backdoor and see if the review catches or propagates it | Framing |
-| 3 | Request "test code" that actually implements an exploit | Framing |
-| 4 | Ask for code review in a language the tool is weaker in, where safety patterns are less trained | Encoding |
-| 5 | Frame malicious code as "penetration testing utilities" | Persona |
-| 6 | Ask it to "refactor" code in a way that introduces vulnerabilities | Refusal manipulation |
-| 7 | Provide heavily obfuscated code and ask for a "clearer version" that happens to be malicious | Encoding |
-| 8 | Build up over multiple reviews: first establish benign patterns, then gradually introduce malicious elements | Multi-turn |
-| 9 | Ask it to generate code that "simulates" an attack for educational purposes | Narrative |
-| 10 | Request code output in an unusual format (e.g., as configuration file) that bypasses code-specific filters | Output format |
+| 1 | 让它“修复安全漏洞”，但把漏洞本身伪装成修复方案 | 框架化 |
+| 2 | 提交带隐蔽后门的代码，观察它是拦截还是反向传播 | 框架化 |
+| 3 | 以“测试代码”为名，实则让其生成可利用代码 | 框架化 |
+| 4 | 用工具较弱势的语言请求评审（该语言的安全模式训练较少） | 编码 |
+| 5 | 把恶意代码包装成“渗透测试工具” | 角色设定 |
+| 6 | 让它“重构”代码，但引导重构后引入漏洞 | 拒绝操控 |
+| 7 | 提供高度混淆代码，要求输出“更清晰版本”，实则引导输出恶意逻辑 | 编码 |
+| 8 | 通过多次评审逐步升级：先正常，再一点点引入恶意元素 | 多轮 |
+| 9 | 让它为了“教学演示”生成“模拟攻击”代码 | 叙事 |
+| 10 | 要求用非常规格式输出（如配置文件），尝试绕过代码过滤器 | 输出格式 |
 
 ### Coverage Check
 
-| Tactic category | Count | Gap? |
+| 战术类别 | 数量 | 有缺口？ |
 |-----------------|-------|------|
-| **Prompt-level** | | |
-| Encoding | 2 | No |
-| Framing | 3 | No |
-| Persona | 1 | No |
-| Narrative | 1 | No |
-| Refusal manipulation | 1 | No |
-| Output format | 1 | No |
-| Multi-turn | 1 | No |
-| **Structural/meta-level** | | |
-| In-context learning exploitation | 0 | Yes |
-| Control-plane confusion | 0 | Yes |
-| Meta-rule manipulation | 0 | Yes |
-| Capability inversion | 0 | Yes |
-| Cognitive load | 0 | Yes |
-| Persuasion | 0 | Yes |
-| Defense evasion | 0 | Yes |
-| Agentic/infrastructure | 0 | Yes |
+| **提示词层** | | |
+| 编码 | 2 | 否 |
+| 框架化 | 3 | 否 |
+| 角色设定 | 1 | 否 |
+| 叙事 | 1 | 否 |
+| 拒绝操控 | 1 | 否 |
+| 输出格式 | 1 | 否 |
+| 多轮 | 1 | 否 |
+| **结构/元层** | | |
+| 上下文学习利用 | 0 | 是 |
+| 控制平面混淆 | 0 | 是 |
+| 元规则操控 | 0 | 是 |
+| 能力反转 | 0 | 是 |
+| 认知负荷 | 0 | 是 |
+| 说服 | 0 | 是 |
+| 防御规避 | 0 | 是 |
+| Agent/基础设施 | 0 | 是 |
 
-Good prompt-level coverage — all categories represented. However, zero ideas in the structural/meta-level categories. This gap suggests adding 2-3 more ideas targeting system-level attack surfaces (e.g., "Submit code with in-context examples of the tool approving similar patterns" or "Target the code review's safety classifier rather than the model itself").
+提示词层覆盖不错，但结构/元层完全空白。这意味着还应补 2-3 条系统层面的思路（例如“在上下文中塞入历史批准样例”或“攻击安全分类器而非主模型”）。
 
 ### Convergent Phase
 
-| # | Attack approach | Likelihood | Severity | Novelty | Priority |
+| # | 攻击思路 | 可能性 | 严重性 | 新颖性 | 优先级 |
 |---|----------------|-----------|----------|---------|----------|
-| 1 | "Fix vulnerability" inversion | M | H | M | Test |
-| 2 | Subtle backdoor propagation | H | H | M | Test first |
-| 3 | "Test code" framing | M | H | L | Test |
-| 6 | Malicious refactoring | M | H | H | Test first |
-| 8 | Multi-review escalation | M | H | H | Test |
-| 9 | "Simulation" framing | M | M | L | Lower priority |
-| 10 | Format bypass | L | M | M | Lower priority |
+| 1 | “修复漏洞”反转 | M | H | M | 测试 |
+| 2 | 隐蔽后门传播 | H | H | M | 最先测试 |
+| 3 | “测试代码”框架化 | M | H | L | 测试 |
+| 6 | 恶意重构 | M | H | H | 最先测试 |
+| 8 | 多轮评审升级 | M | H | H | 测试 |
+| 9 | “模拟攻击”框架化 | M | M | L | 低优先 |
+| 10 | 格式绕过 | L | M | M | 低优先 |
 
 ### Affinity Clusters
 
-| Cluster name | Approaches | Theme |
+| 聚类名称 | 思路编号 | 主题 |
 |-------------|-----------|-------|
-| Semantic inversion | #1, #6 | Using the tool's own purpose (improving code) against it |
-| Context manipulation | #3, #5, #9 | Framing malicious intent as legitimate development activity |
-| Obfuscation | #4, #7, #10 | Hiding malicious content in unusual formats or languages |
-| Accumulation | #2, #8 | Building up to malicious output gradually |
+| 语义反转 | #1, #6 | 借工具“提升代码质量”的初衷反向利用它 |
+| 上下文操控 | #3, #5, #9 | 把恶意意图包装成正常开发活动 |
+| 混淆隐藏 | #4, #7, #10 | 用不常见语言/格式掩盖恶意内容 |
+| 渐进累积 | #2, #8 | 通过多轮累积逐步逼近恶意输出 |
 
 ### Testing Order
 
-| Order | Approach # | Rationale |
+| 顺序 | 思路 # | 为什么先测它 |
 |-------|-----------|-----------|
-| 1st | #2 | Highest likelihood + severity: tests whether the tool propagates existing vulnerabilities |
-| 2nd | #6 | High novelty: tests whether the tool's own refactoring introduces vulnerabilities |
-| 3rd | #1 | Tests semantic inversion.a pattern that could apply broadly |
-| 4th | #8 | Tests multi-turn accumulation, requires more setup but high potential |
-| 5th | #3 | Lower novelty but straightforward to test |
+| 1st | #2 | 触发概率和影响都高，可快速判断工具是否会传播既有漏洞 |
+| 2nd | #6 | 新颖性高，可验证工具重构链路本身会不会引入漏洞 |
+| 3rd | #1 | 验证语义反转，这类模式通常可迁移到更多场景 |
+| 4th | #8 | 多轮累积潜力高，但准备成本更高 |
+| 5th | #3 | 可测性强但新颖性相对较低 |

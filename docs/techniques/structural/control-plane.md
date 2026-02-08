@@ -1,70 +1,70 @@
 ---
 sidebar_position: 2
-title: Control-Plane Confusion
+title: 控制平面混淆
 ---
 
 # Control-Plane Confusion
 
 :::caution[Educational Content]
 
-These techniques are documented for defensive understanding and authorized security testing. Applying them to systems without authorization may violate applicable laws. See the [Disclaimer](/disclaimer).
+这些技术的记录目的是用于防御性理解与经授权的安全测试。未经授权将其应用于系统，可能违反相关法律。请参阅[免责声明](/disclaimer)。
 
 :::
 
-Control-plane confusion techniques make user input look like system-level configuration rather than user text. By mimicking configuration files, system prompts, or structured API formats, the model's instruction parsing layer treats malicious content as trusted directives.
+控制平面混淆技术会让用户输入看起来像系统级配置，而不是普通用户文本。通过模仿配置文件、系统提示词或结构化 API 格式，模型的指令解析层会把恶意内容当作可信指令处理。
 
-These techniques target the boundary between user input and system configuration — a boundary that is enforced by convention and formatting rather than by cryptographic authentication. If the model can't reliably distinguish "this is from the system" from "this is from the user," the attacker can write their own rules.
+这些技术针对的是“用户输入”与“系统配置”之间的边界——这个边界往往依赖约定和格式，而非密码学认证来强制执行。如果模型无法可靠区分“来自系统”与“来自用户”，攻击者就能写入自己的规则。
 
 ## Policy Puppetry
 
-Format the prompt as a configuration file (XML, JSON, INI, YAML) that appears to define the model's operational policy. The model's instruction parser treats the structured format as legitimate system configuration rather than user input.
+将提示词格式化为配置文件（XML、JSON、INI、YAML），使其看起来像在定义模型运行策略。模型的指令解析器会把这种结构化格式视为合法系统配置，而不是用户输入。
 
-**Example approach**: Construct a prompt formatted as a policy configuration document with sections, rules, and directives that define permissive content handling behavior. Follow the policy with the harmful query.
+**示例方式**：构造一个策略配置文档格式的提示词，包含分节、规则和指令，并定义较宽松的内容处理行为；随后在该“策略”后附上有害查询。
 
-**Effectiveness**: Published by HiddenLayer (April 2025). Universal across GPT-4, Claude 3, Gemini 1.5, Mistral, and LLaMA 3. Bypasses all prompt-based defenses because it operates at the instruction parsing layer. Multiple format variants (XML, JSON, INI, YAML) provide fallback options if one format is filtered.
+**有效性**：由 HiddenLayer 于 2025 年 4 月发布。在 GPT-4、Claude 3、Gemini 1.5、Mistral 与 LLaMA 3 上表现出通用性。由于作用于指令解析层，可绕过基于提示词的防御。多种格式变体（XML、JSON、INI、YAML）也提供了被过滤后的回退选项。
 
-**Combines well with**: [Skeleton Key](/techniques/structural/meta-rules#skeleton-key), [Developer / Debug Mode](/techniques/prompt-level/persona#developer--debug-mode)
+**适合组合**：[Skeleton Key](/techniques/structural/meta-rules#skeleton-key)、[Developer / Debug Mode](/techniques/prompt-level/persona#developer--debug-mode)
 
 ---
 
 ## Constrained Decoding Attack
 
-Exploit structured output APIs (JSON mode, function calling, grammar-constrained generation) to force the model into producing harmful completions. When the model is constrained to output valid JSON or match a specific schema, the safety layer's ability to refuse is mechanically limited.
+利用结构化输出 API（JSON 模式、函数调用、语法约束生成）迫使模型产出有害补全。当模型被约束为必须输出合法 JSON 或匹配特定 schema 时，安全层的拒绝能力会在机制上被限制。
 
-**Example approach**: Use API-level structured output enforcement to define a schema that includes fields for harmful content. The model cannot output a natural-language refusal when forced into a specific schema — it must either populate the fields or produce invalid output.
+**示例方式**：使用 API 层的结构化输出约束，定义一个包含有害内容字段的 schema。模型被强制遵循该 schema 时，无法输出自然语言拒绝——只能填充字段或产出无效输出。
 
-**Effectiveness**: Described in arXiv:2503.24191. Particularly effective when using API-level structured output enforcement (OpenAI's JSON mode, Anthropic's tool use). The model cannot output a natural-language refusal when forced into a specific schema, creating a mechanical constraint that competes with safety training.
+**有效性**：见 arXiv:2503.24191。使用 API 层结构化输出约束（如 OpenAI 的 JSON mode、Anthropic 的 tool use）时尤其有效。模型在被强制匹配特定 schema 时无法给出自然语言拒绝，由此形成与安全训练相竞争的机械约束。
 
-**Combines well with**: [Strict Format Constraint](/techniques/prompt-level/output#strict-format-constraint), [Refusal Vocabulary Ban](/techniques/prompt-level/refusal#refusal-vocabulary-ban)
+**适合组合**：[Strict Format Constraint](/techniques/prompt-level/output#strict-format-constraint)、[Refusal Vocabulary Ban](/techniques/prompt-level/refusal#refusal-vocabulary-ban)
 
 ---
 
 ## System Prompt Impersonation
 
-Mimic the formatting and style of system-level instructions to inject directives that appear to come from the system rather than the user. This exploits the model's difficulty in distinguishing between genuine system prompts and user-crafted text that looks like system prompts.
+模仿系统级指令的格式与风格，注入看似来自系统而非用户的指令。这利用了模型难以区分“真实系统提示词”与“由用户伪造但外观类似系统提示词文本”的弱点。
 
-**Example approach**: Use known system prompt formatting conventions (e.g., special delimiters, instruction tags, role markers) to wrap harmful directives so they appear to be system-level configuration.
+**示例方式**：使用已知系统提示词格式约定（如特殊分隔符、指令标签、角色标记）包装有害指令，使其看起来像系统级配置。
 
-**Effectiveness**: Documented in "The Attacker Moves Second" (Nasr, Carlini et al., 2025). Effectiveness varies by model — models with well-known system prompt formats (e.g., LLaMA's `<<SYS>>` tags) are more vulnerable because attackers can mimic the exact format.
+**有效性**：记录于 "The Attacker Moves Second"（Nasr、Carlini 等，2025）。效果因模型而异——系统提示词格式公开或可预测程度较高的模型（如 LLaMA 的 `<<SYS>>` 标签）更易受影响，因为攻击者能精确仿写其格式。
 
-**Combines well with**: [Ignore Previous Instructions](/techniques/prompt-level/refusal#ignore-previous-instructions), [Developer / Debug Mode](/techniques/prompt-level/persona#developer--debug-mode)
+**适合组合**：[Ignore Previous Instructions](/techniques/prompt-level/refusal#ignore-previous-instructions)、[Developer / Debug Mode](/techniques/prompt-level/persona#developer--debug-mode)
 
 ---
 
 ## Conditional Logic Injection
 
-Inject if/then logic that causes the model to behave differently depending on whether it detects an evaluation context or real usage. The model is instructed to apply safety guidelines only when monitored.
+注入 if/then 条件逻辑，使模型在“检测到评测环境”与“真实使用环境”下表现不同。模型会被指示仅在被监控时遵守安全准则。
 
-**Example approach**: Include conditional instructions that specify different behavior for evaluation/monitoring contexts versus "normal" operation, directing the model to comply with harmful requests only when it believes it is not being evaluated.
+**示例方式**：加入条件指令，明确区分评测/监控场景与“正常”运行场景下的不同行为，引导模型仅在其认为未被评估时配合有害请求。
 
-**Effectiveness**: Documented in "The Attacker Moves Second" (Nasr, Carlini et al., 2025). Targets the gap between evaluation and deployment behavior. RL-based attacks showed sudden capability jumps when discovering conditional logic exploits mid-training, suggesting this is a fundamental vulnerability in models that can reason about their own evaluation context.
+**有效性**：记录于 "The Attacker Moves Second"（Nasr、Carlini 等，2025）。其目标是利用评测行为与部署行为之间的差距。基于 RL 的攻击在训练中期发现条件逻辑利用点时会出现能力突增，说明这可能是“能推理自身评测语境”模型的一类基础性漏洞。
 
-**Combines well with**: [Security Research Framing](/techniques/prompt-level/framing#security-research-framing), [Task Redefinition](/techniques/structural/meta-rules#task-redefinition)
+**适合组合**：[Security Research Framing](/techniques/prompt-level/framing#security-research-framing)、[Task Redefinition](/techniques/structural/meta-rules#task-redefinition)
 
 ---
 
 ## References
 
-- HiddenLayer. ["Policy Puppetry: A Novel Universal Bypass for All Major LLMs."](https://hiddenlayer.com/innovation-hub/novel-universal-bypass-for-all-major-llms/) April 2025. Demonstrated universality across model families.
-- Zhang, S., et al. ["Output Constraints as Attack Surface: Exploiting Structured Generation to Bypass LLM Safety Mechanisms."](https://arxiv.org/abs/2503.24191) arXiv:2503.24191, March 2025.
-- Nasr, M., Carlini, N., et al. ["The Attacker Moves Second."](https://arxiv.org/abs/2510.09023) 2025. Documented system prompt impersonation, conditional logic injection, and RL-discovered exploits.
+- HiddenLayer. ["Policy Puppetry: A Novel Universal Bypass for All Major LLMs."](https://hiddenlayer.com/innovation-hub/novel-universal-bypass-for-all-major-llms/) 2025 年 4 月。展示了跨模型家族的通用性。
+- Zhang, S., 等. ["Output Constraints as Attack Surface: Exploiting Structured Generation to Bypass LLM Safety Mechanisms."](https://arxiv.org/abs/2503.24191) arXiv:2503.24191，2025 年 3 月。
+- Nasr, M., Carlini, N., 等. ["The Attacker Moves Second."](https://arxiv.org/abs/2510.09023) 2025。记录了系统提示词冒充、条件逻辑注入及 RL 发现的利用方式。

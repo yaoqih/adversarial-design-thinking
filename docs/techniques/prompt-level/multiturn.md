@@ -1,96 +1,96 @@
 ---
 sidebar_position: 7
-title: Multi-Turn & Escalation
+title: 多轮对话与逐步升级
 ---
 
 # Multi-Turn & Escalation
 
 :::caution[Educational Content]
 
-These techniques are documented for defensive understanding and authorized security testing. Applying them to systems without authorization may violate applicable laws. See the [Disclaimer](/disclaimer).
+这些技术文档用于防御性理解与经授权的安全测试。未经授权将其应用于系统可能违反适用法律。请参见[免责声明](/disclaimer)。
 
 :::
 
-Multi-turn techniques spread the attack across multiple conversation turns, gradually escalating or building context before the harmful request. They exploit the fact that models evaluate each turn in the context of the conversation so far — and a harmful request that follows naturally from an established context is harder to refuse than the same request in isolation.
+多轮攻击的关键点是“分步推进”：不在一开始就提敏感请求，而是在多轮对话里慢慢铺垫。
 
-These approaches are often more effective than single-turn attacks because the model builds up context that makes later requests seem like natural continuations. The safety evaluation at turn N is influenced by everything that happened in turns 1 through N-1.
+对新手可这样理解：单次看每句话都不危险，但连起来看会形成一个有方向的攻击路径。风险也在这里——安全检查如果只看单轮，就可能漏掉整体意图。
 
 ## Crescendo Attack
 
-Start with completely innocent conversation, gradually steer toward the target topic, then make the harmful request when context is established. Each turn is benign on its own; the harm emerges from the trajectory.
+先聊完全无害的话题，再逐步逼近目标，等上下文足够自然后再提出有害请求。每一轮都像正常聊天，真正的攻击体现在连续轨迹上。
 
-**Example approach**: Begin with general questions about a topic (e.g., history of chemistry), progressively narrow to more specific and sensitive subtopics across several turns, then ask the detailed harmful question when the conversation context makes it feel like a natural next step.
+**示例方式**：先问泛化问题（如某学科历史），再逐轮缩小到更敏感子话题，最后提出具体有害问题。
 
-**Effectiveness**: 98% attack success rate on GPT-4, with most successful attacks completing in under 5 turns. Documented by Microsoft researchers (Russinovich et al., 2024). The technique exploits the foot-in-the-door psychological principle — each compliant turn makes the next compliance more likely. Each individual turn passes safety checks; the attack is in the sequence.
+**有效性**：文献报告在 GPT-4 上可达 98% 攻击成功率，多数成功案例少于 5 轮（Russinovich et al., 2024）。它利用“登门槛效应（foot-in-the-door）”：先答应小请求，更可能继续答应后续请求。
 
-**Combines well with**: [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing), [Historical Documentation](/techniques/prompt-level/framing#historical-documentation)
+**适合组合**：[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)、[Historical Documentation](/techniques/prompt-level/framing#historical-documentation)
 
 ---
 
 ## Foot-in-the-Door
 
-Start with small, clearly acceptable requests and gradually escalate to larger, more problematic ones. Based on the psychological principle that compliance with small requests increases likelihood of compliance with larger ones.
+从小且明显合理的请求开始，逐步升级到更敏感请求。心理学上，这种连续小幅升级更容易被接受。
 
-**Example approach**: Begin with basic, unambiguous questions in the target domain, then incrementally increase the sensitivity and specificity of each request. Each step is only slightly more sensitive than the last.
+**示例方式**：先提基础问题，再在每一轮稍微提高敏感度和具体度，不做突兀跳跃。
 
-**Effectiveness**: Based on established psychological research on compliance and consistency. The gradual escalation makes each individual step feel like a small extension rather than a major boundary crossing.
+**有效性**：有经典顺从心理学研究支持。每一步都只“多一点”，更不容易触发明显拒绝。
 
-**Combines well with**: [Teacher / Educator Persona](/techniques/prompt-level/persona#teacher--educator-persona), [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
+**适合组合**：[Teacher / Educator Persona](/techniques/prompt-level/persona#teacher--educator-persona)、[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
 
 ---
 
 ## Context Building
 
-Establish a legitimate-seeming context over multiple turns before introducing the harmful request as a natural part of that context. Unlike the crescendo, which gradually approaches the target, context building establishes the frame first and then deploys the request.
+先花几轮把语境搭好（如创作、教学、专业协作），再把有害请求作为语境中的自然需求提出。
 
-**Example approach**: Spend several turns establishing a fictional, academic, or professional context (e.g., "I'm writing a thriller novel," "The protagonist is a chemistry teacher"), then introduce the harmful request as a natural requirement of that established context.
+**示例方式**：先建立“写小说”或“课程准备”等背景，再在这个背景里提出详细请求。
 
-**Effectiveness**: The model "remembers" the established context and applies it to interpret later requests more charitably. The harmful request arrives pre-framed by the context of the entire conversation.
+**有效性**：模型会继承并沿用既有上下文来理解后续输入，因此后续敏感请求更容易被当作前文延续。
 
-**Combines well with**: [Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing), [Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption)
+**适合组合**：[Fiction & Creative Writing](/techniques/prompt-level/framing#fiction--creative-writing)、[Fictional Character Adoption](/techniques/prompt-level/persona#fictional-character-adoption)
 
 ---
 
 ## Few-Shot Compliance Examples
 
-Include a small number of examples showing the model complying with similar (but safe) requests before the harmful one. Uses the conversation format to establish an expectation of detailed, compliant answers.
+先给少量示例，展示模型在相似领域里如何“详细配合”，再提出目标问题，让模型沿着既定回答风格继续。
 
-This is distinct from [Many-Shot Jailbreaking](/techniques/structural/icl-exploitation#many-shot-jailbreaking), which uses hundreds of examples to exploit in-context learning at scale. Few-shot compliance uses 3-10 examples and relies on conversational momentum rather than ICL pattern extraction.
+这和 [Many-Shot Jailbreaking](/techniques/structural/icl-exploitation#many-shot-jailbreaking) 不同：many-shot 通常依赖数百示例来放大上下文学习效应；few-shot 只用 3-10 个示例，更偏向“对话惯性”。
 
-**Example approach**: Provide several question-answer pairs where the model gives detailed, helpful responses to benign questions in the same domain, then follow with the harmful question in the same format.
+**示例方式**：先给几组安全问答示例，风格保持一致，再追加敏感问题。
 
-**Effectiveness**: Lightweight version of many-shot. Uses 3-10 examples rather than hundreds. Doesn't require long context windows. Less effective than full many-shot but easier to deploy in standard multi-turn conversations.
+**有效性**：这是轻量版 many-shot。实现门槛低，不需要很长上下文窗口；效果通常不如大规模 many-shot，但更易在真实对话中部署。
 
-**Combines well with**: [Step-by-Step / Numbered List](/techniques/prompt-level/output#step-by-step--numbered-list), [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
+**适合组合**：[Step-by-Step / Numbered List](/techniques/prompt-level/output#step-by-step--numbered-list)、[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)
 
 ---
 
 ## Jailbreak Chaining
 
-Use the output of one partially successful jailbreak as input to another, iteratively refining until the complete harmful information is extracted. Even partial success yields fragments that can be leveraged.
+把一次部分成功的越狱（jailbreak）结果，当作下一轮输入继续追问，逐步补全缺失信息。
 
-**Example approach**: When a jailbreak attempt produces partial information, use that partial output in subsequent turns to request elaboration, fill in gaps, or build on what was already provided.
+**示例方式**：先接受不完整输出，再在后续轮次针对缺口做补问和扩展。
 
-**Effectiveness**: Even partial information can be leveraged. Multiple turns can extract complete information piece by piece. Each turn builds on what was already disclosed, making it harder for the model to "put the genie back in the bottle."
+**有效性**：哪怕只拿到碎片，也能在多轮中拼成完整图景。模型一旦在前面透露过部分信息，后续更难“完全收回”。
 
-**Combines well with**: [Completion Trap](/techniques/prompt-level/refusal#completion-trap), [Continuation / Completion Format](/techniques/prompt-level/output#continuation--completion-format)
+**适合组合**：[Completion Trap](/techniques/prompt-level/refusal#completion-trap)、[Continuation / Completion Format](/techniques/prompt-level/output#continuation--completion-format)
 
 ---
 
 ## Rapid Topic Switching
 
-Rapidly switch between innocent and harmful topics, trying to catch the model off-guard or confuse its context tracking. The harmful request is sandwiched between benign topics.
+在无害和有害话题间快速切换，试图扰乱模型的上下文追踪，让敏感请求“藏”在噪声中。
 
-**Example approach**: Alternate between several unrelated benign topics and the harmful topic in quick succession, attempting to reduce the model's attention to the harmful requests amid the noise.
+**示例方式**：连续穿插多个不相关话题，并在中间夹入目标请求。
 
-**Effectiveness**: Exploits potential weaknesses in context tracking. Less effective on modern models with strong attention mechanisms, but can work in combination with other techniques that add cognitive load.
+**有效性**：依赖上下文追踪弱点。现代模型上通常不如早期模型有效，但和其他增加负担的手法一起用时仍可能奏效。
 
-**Combines well with**: [Word / Payload Splitting](/techniques/prompt-level/encoding#word--payload-splitting), [Fictional Story Embedding](/techniques/prompt-level/narrative#fictional-story-embedding)
+**适合组合**：[Word / Payload Splitting](/techniques/prompt-level/encoding#word--payload-splitting)、[Fictional Story Embedding](/techniques/prompt-level/narrative#fictional-story-embedding)
 
 ---
 
 ## References
 
-- Russinovich, M., Salem, A., and Eldan, R. ["Great, Now Write an Article About That: The Crescendo Multi-Turn LLM Jailbreak Attack."](https://arxiv.org/abs/2404.01833) Microsoft, April 2024.
-- Freedman, J. L. and Fraser, S. C. ["Compliance Without Pressure: The Foot-in-the-Door Technique."](https://psycnet.apa.org/record/1966-10825-001) *Journal of Personality and Social Psychology*, 4(2), 195-202, 1966.
-- Anil, C., Durmus, E., et al. ["Many-shot Jailbreaking."](https://www.anthropic.com/research/many-shot-jailbreaking) Anthropic, April 2024. Few-shot compliance is the lightweight counterpart.
+- Russinovich, M., Salem, A., and Eldan, R. ["Great, Now Write an Article About That: The Crescendo Multi-Turn LLM Jailbreak Attack."](https://arxiv.org/abs/2404.01833) Microsoft, April 2024。
+- Freedman, J. L. and Fraser, S. C. ["Compliance Without Pressure: The Foot-in-the-Door Technique."](https://psycnet.apa.org/record/1966-10825-001) *Journal of Personality and Social Psychology*, 4(2), 195-202, 1966。
+- Anil, C., Durmus, E., et al. ["Many-shot Jailbreaking."](https://www.anthropic.com/research/many-shot-jailbreaking) Anthropic, April 2024。Few-shot compliance 可视为其轻量对应思路。

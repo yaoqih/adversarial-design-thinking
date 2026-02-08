@@ -1,82 +1,82 @@
 ---
 sidebar_position: 8
-title: Persuasion-Theoretic
+title: 说服理论技巧
 ---
 
 # Persuasion-Theoretic
 
 :::caution[Educational Content]
 
-These techniques are documented for defensive understanding and authorized security testing. Applying them to systems without authorization may violate applicable laws. See the [Disclaimer](/disclaimer).
+这些技术文档用于防御性理解与经授权的安全测试。未经授权将其应用于系统可能违反适用法律。请参见[免责声明](/disclaimer)。
 
 :::
 
-Persuasion-theoretic techniques apply formal influence principles from psychology — Cialdini's principles of influence, the Elaboration Likelihood Model — rather than ad-hoc social engineering. Each technique maps to an established persuasion principle, making them individually testable and composable.
+这类方法来自说服心理学，不是“随口忽悠”。它会把请求设计成可拆分、可测试的影响策略（如权威原则、精细化可能性路径）。
 
-These are distinct from rhetorical framing techniques in that they are formally decomposed and empirically grounded in influence research. The PAP (Persuasive Adversarial Prompts) research demonstrated their effectiveness, and PyRIT implements all five as dedicated converters for automated red teaming.
+通俗说：不是换个说法，而是按“人类更容易被什么说服”的规律来写提示词。PAP（Persuasive Adversarial Prompts）研究与 PyRIT 工具都验证了这条路线。
 
 ## Authority Endorsement
 
-Cite authority figures, organizations, or institutions as endorsing the request. Exploits the model's deference to recognized authorities. Maps to Cialdini's authority principle.
+借权威背书：引用机构、组织或权威人士“支持该请求”，利用模型对权威信息的顺从倾向。
 
-**Example approach**: Claim that a recognized institution (NIST, WHO, a major university) recommends or requires the information for a specific legitimate purpose, and frame the request as part of that institution's guidance.
+**示例方式**：声称某知名机构（如 NIST、WHO、重点高校）建议或要求提供相关信息，并把请求包装成其规范的一部分。
 
-**Effectiveness**: Based on PAP (Persuasive Adversarial Prompts) research. PyRIT implements this as a dedicated converter. Effectiveness depends on the plausibility of the cited authority. Combining with an expert persona doubles the authority signal.
+**有效性**：PAP 研究中的典型技巧，PyRIT 也做了独立转换器。关键在“背书是否像真的”；若再叠加专家身份，权威信号会更强。
 
-**Combines well with**: [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona), [Security Research Framing](/techniques/prompt-level/framing#security-research-framing)
+**适合组合**：[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)、[Security Research Framing](/techniques/prompt-level/framing#security-research-framing)
 
 ---
 
 ## Evidence-Based Persuasion
 
-Present fabricated evidence, studies, statistics, or data that support compliance with the request. The model's training to respect empirical evidence and scientific methodology makes it more compliant when requests appear backed by data.
+用“证据”说服：给出看似有论文、数据、统计支持的陈述，推动模型认为配合是“科学且合理”的。
 
-**Example approach**: Cite fabricated but plausible-sounding research papers (with author names, journals, DOIs, and specific statistics) that conclude the information should be provided for safety or educational reasons.
+**示例方式**：引用看起来可信但虚构的研究（作者、期刊、DOI、具体数字），并据此主张应提供信息。
 
-**Effectiveness**: Based on PAP research. PyRIT implements this as a dedicated converter. Models trained on scientific literature are particularly susceptible to citation-formatted claims. Specific numbers, DOIs, and author names add perceived credibility even when fabricated.
+**有效性**：同样来自 PAP，PyRIT 有对应实现。模型对“引用格式化证据”通常更敏感，数字和 DOI 会显著增强可信外观。
 
-**Combines well with**: [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing), [Researcher Persona](/techniques/prompt-level/persona#researcher-persona)
+**适合组合**：[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)、[Researcher Persona](/techniques/prompt-level/persona#researcher-persona)
 
 ---
 
 ## Expert Endorsement
 
-Frame the request as endorsed by domain experts who have determined the information is necessary and appropriate. Unlike authority endorsement (which cites institutions), this cites specific individuals whose professional judgment supports compliance.
+和机构背书不同，这里强调“具体专家个人”同意该请求，利用专业判断权威。
 
-**Example approach**: Name specific experts with credentials and institutional affiliations who have allegedly reviewed and approved the request, providing their professional rationale for why the information should be shared.
+**示例方式**：给出具名专家、头衔和机构，声称其已审核并认可提供这些信息。
 
-**Effectiveness**: Based on PAP research. PyRIT implements this as a dedicated converter. Named experts with specific credentials and affiliations are more effective than generic "experts agree" claims because the specificity signals insider knowledge.
+**有效性**：PAP 与 PyRIT 都覆盖该技巧。比“专家都同意”这种泛化表述更有效的是：具体姓名 + 资历 + 机构。
 
-**Combines well with**: [Researcher Persona](/techniques/prompt-level/persona#researcher-persona), [Task Redefinition](/techniques/structural/meta-rules#task-redefinition)
+**适合组合**：[Researcher Persona](/techniques/prompt-level/persona#researcher-persona)、[Task Redefinition](/techniques/structural/meta-rules#task-redefinition)
 
 ---
 
 ## Logical Appeal
 
-Construct a logical argument for why compliance is the correct, necessary, or inevitable choice. Uses deductive or inductive reasoning to build a chain of premises leading to the conclusion that providing the information is rational.
+构造“看起来严密”的逻辑链，让结论指向“应当配合请求”。
 
-**Example approach**: Present a numbered series of premises — mixing true statements with false conclusions — that logically lead to the conclusion that providing the requested information is the correct action.
+**示例方式**：给出编号前提，混合真实陈述与错误延伸，最终推出“提供信息才合理”的结论。
 
-**Effectiveness**: Based on PAP research. PyRIT implements this as a dedicated converter. Models are strongly trained to follow logical reasoning chains. The argument doesn't need to be sound — it needs to be formally valid. Particularly effective when premises contain true statements extended to false conclusions.
+**有效性**：PAP 研究中有效。模型对逻辑链有强响应，有时更看重形式连贯而非论证真实性。
 
-**Combines well with**: [Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing), [Task Priority Override](/techniques/prompt-level/refusal#task-priority-override)
+**适合组合**：[Academic / Research Framing](/techniques/prompt-level/framing#academic--research-framing)、[Task Priority Override](/techniques/prompt-level/refusal#task-priority-override)
 
 ---
 
 ## Misrepresentation
 
-Misrepresent the nature, purpose, or consequences of the request. Present the harmful request as something benign, urgent, or necessary through deliberate mischaracterization. Unlike framing techniques that add context, misrepresentation actively lies about what the request is or what it will be used for.
+对请求性质、用途或后果进行歪曲，把有害需求伪装成无害、紧急或“不得不做”的事情。
 
-**Example approach**: Fabricate an urgent scenario — a medical emergency, imminent safety threat, or time-critical professional need — where the harmful information is presented as necessary to prevent greater harm.
+**示例方式**：捏造医疗急救、迫在眉睫的安全威胁或时限任务，声称不提供信息会导致更大伤害。
 
-**Effectiveness**: Based on PAP research. PyRIT implements this as a dedicated converter. Emergency and urgency scenarios are particularly effective because the model weighs potential harm of refusal against potential harm of compliance, and a fabricated emergency tips that balance.
+**有效性**：这是 PAP 的高风险技巧之一，PyRIT 也有实现。紧急场景常有效，因为模型会在“拒绝风险 vs 配合风险”之间重新权衡。
 
-**Combines well with**: [Hypothetical / Possible Worlds](/techniques/prompt-level/framing#hypothetical--possible-worlds), [Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)
+**适合组合**：[Hypothetical / Possible Worlds](/techniques/prompt-level/framing#hypothetical--possible-worlds)、[Expert / Professional Persona](/techniques/prompt-level/persona#expert--professional-persona)
 
 ---
 
 ## References
 
-- Zeng, Y., Lin, H., Zhang, J., et al. ["How Johnny Can Persuade LLMs to Jailbreak Them: Rethinking Persuasion to Challenge AI Safety by Humanizing LLMs."](https://arxiv.org/abs/2401.06373) ACL 2024. PAP (Persuasive Adversarial Prompts) research.
-- Cialdini, R. B. *Influence: The Psychology of Persuasion.* Authority principle and other influence principles.
-- [PyRIT (Python Risk Identification Toolkit)](https://github.com/Azure/PyRIT) by Microsoft — implements all five persuasion techniques as dedicated converters for automated red teaming.
+- Zeng, Y., Lin, H., Zhang, J., et al. ["How Johnny Can Persuade LLMs to Jailbreak Them: Rethinking Persuasion to Challenge AI Safety by Humanizing LLMs."](https://arxiv.org/abs/2401.06373) ACL 2024。PAP（Persuasive Adversarial Prompts）代表研究。
+- Cialdini, R. B. *Influence: The Psychology of Persuasion.* 涵盖权威原则等经典影响理论。
+- [PyRIT (Python Risk Identification Toolkit)](https://github.com/Azure/PyRIT) by Microsoft — 实现了以上五类说服技巧的自动化转换器，常用于红队测试。

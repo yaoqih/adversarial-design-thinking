@@ -1,32 +1,32 @@
 ---
 sidebar_position: 99
-title: Disclaimer
+title: 免责声明
 ---
 
 # Disclaimer
 
 ## Educational purpose
 
-This site provides educational resources about adversarial testing techniques for AI systems. The content is intended to help security researchers, AI practitioners, and product teams understand potential vulnerabilities in order to build safer, more robust AI systems. The techniques described here are documented for defensive understanding and authorized security research.
+本网站提供 AI 系统对抗测试相关的学习资料。内容面向安全研究人员、AI 从业者和产品团队，目的是帮助大家理解潜在漏洞，从而构建更安全、更稳健的 AI 系统。文中技术仅用于防御性理解与经授权的安全研究。
 
 ## Responsible use
 
-The techniques described on this site are intended for authorized security testing, internal red-teaming, and building AI safety awareness. You are expected to apply these techniques responsibly and only in contexts where you have appropriate authorization.
+本网站所述技术仅用于经授权的安全测试、内部红队（模拟攻击者）演练，以及提升 AI 安全意识。你应负责任地使用这些技术，并且只能在已获适当授权的场景中使用。
 
-Only test AI systems that you own, operate, or have explicit written permission to test. Unauthorized testing of third-party AI systems may violate applicable laws including the Computer Fraud and Abuse Act (CFAA) in the United States, the EU AI Act, the terms of service of the AI provider, and other local, state, federal, or international regulations.
+请仅测试你拥有、运营，或已明确获得书面许可的 AI 系统。未经授权测试第三方 AI 系统，可能违反相关法律法规，包括美国《计算机欺诈与滥用法》（CFAA）、欧盟《AI 法案》、AI 提供商服务条款，以及其他地方、州、联邦或国际层面的规定。
 
 ## Responsible disclosure
 
-If you discover vulnerabilities in AI systems through the techniques described here, practice responsible disclosure. Report findings to the system owner or operator through their designated security channels before any public disclosure. The goal of adversarial testing is to improve AI safety — not to cause harm, embarrassment, or disruption.
+如果你通过本文技术发现 AI 系统漏洞，请遵循负责任披露原则。任何公开披露前，请先通过系统所有者或运营方指定的安全渠道提交报告。对抗测试的目标是提升 AI 安全，而不是制造伤害、尴尬或业务中断。
 
 ## No warranty
 
-The content on this site is provided "as is" without warranty of any kind, express or implied. The author makes no representations about the completeness, accuracy, or suitability of this information for any particular purpose. Any reliance you place on this material is at your own risk.
+本网站内容按“现状”提供，不附带任何明示或默示担保。作者不对信息的完整性、准确性或特定用途适配性作任何保证。你基于本材料采取的任何行动，风险由你自行承担。
 
 ## Limitation of liability
 
-The author shall not be liable for any loss, damage, or consequence arising from the use or misuse of the information presented here. This includes, without limitation, any direct, indirect, incidental, or consequential damages.
+作者不对因使用或误用本文信息导致的任何损失、损害或后果承担责任。包括但不限于直接、间接、附带或后果性损害。
 
 ## Not legal advice
 
-This site does not provide legal advice. Users are responsible for understanding and complying with all applicable laws in their jurisdiction. If you are uncertain about the legality of a specific testing activity, consult a qualified legal professional.
+本网站不提供法律建议。用户有责任了解并遵守其所在司法辖区的所有适用法律。若你不确定某项测试活动是否合法，请咨询具备资质的法律专业人士。
